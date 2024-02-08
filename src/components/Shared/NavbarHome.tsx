@@ -22,15 +22,15 @@ const NavbarHome = () => {
         href="/"
         className={`text-white ${
           pathName === "/" ? "text-yellow-500" : "text-white no-underline	"
-        } hover:line-through`}
+        } hover:line-through transition-all duration-700`}
       >
-        <li className="cursor-pointer">Home</li>
+        <li className="cursor-pointer ">Home</li>
       </Link>
       <Link
         href="/about"
         className={`text-white ${
           pathName === "/about" ? "text-yellow-500" : "text-white no-underline	"
-        } hover:line-through`}
+        } hover:line-through transition-all duration-700`}
       >
         {" "}
         <li className="cursor-pointer">About</li>
@@ -41,7 +41,7 @@ const NavbarHome = () => {
           pathName === "/donation"
             ? "text-yellow-500"
             : "text-white no-underline	"
-        } hover:line-through`}
+        } hover:line-through transition-all duration-700`}
       >
         {" "}
         <li className="cursor-pointer">Donation</li>
@@ -50,18 +50,10 @@ const NavbarHome = () => {
         href="/stat"
         className={`text-white ${
           pathName === "/stat" ? "text-yellow-500" : "text-white no-underline	"
-        } hover:line-through`}
+        } hover:line-through transition-all duration-700`}
       >
         {" "}
         <li className="cursor-pointer">Statistics</li>
-      </Link>
-      <Link
-        href="/blog"
-        className={`text-white ${
-          pathName === "/blog" ? "text-yellow-500" : "text-white no-underline	"
-        } hover:line-through`}
-      >
-        <li className="cursor-pointer">Blog</li>
       </Link>
       <Link
         href="/volunteer"
@@ -69,7 +61,7 @@ const NavbarHome = () => {
           pathName === "/volunteer"
             ? "text-yellow-500"
             : "text-white no-underline	"
-        } hover:line-through`}
+        } hover:line-through transition-all duration-700`}
       >
         <li className="cursor-pointer">Volunteer</li>
       </Link>
@@ -77,7 +69,7 @@ const NavbarHome = () => {
         href="/faqs"
         className={`text-white ${
           pathName === "/faqs" ? "text-yellow-500" : "text-white no-underline	"
-        } hover:line-through`}
+        } hover:line-through transition-all duration-700`}
       >
         <li className="cursor-pointer">FAQs</li>
       </Link>
@@ -87,9 +79,25 @@ const NavbarHome = () => {
           pathName === "/contact"
             ? "text-yellow-500"
             : "text-white no-underline	"
-        } hover:line-through`}
+        } hover:line-through transition-all duration-700`}
       >
         <li className="cursor-pointer">Contact Us</li>
+      </Link>
+      <Link
+        href="/login"
+        className={`text-white ${
+          pathName === "/login" ? "text-yellow-500" : "text-white no-underline	"
+        } hover:line-through transition-all duration-700`}
+      >
+        <li className="cursor-pointer">Login</li>
+      </Link>
+      <Link
+        href="/signup"
+        className={`text-white ${
+          pathName === "/signup" ? "text-yellow-500" : "text-white no-underline	"
+        } hover:line-through transition-all duration-700`}
+      >
+        <li className="cursor-pointer">Register</li>
       </Link>
       <Link
         href="/donate"
@@ -104,7 +112,7 @@ const NavbarHome = () => {
     </>
   );
   return (
-    <div className="lg:flex justify-around items-center bg-gray-900 rounded px-10 py-2">
+    <div className="lg:flex justify-around items-center bg-gray-900 rounded px-10 py-2 cursor-auto">
       <div className="flex items-center gap-10 ">
         <div
           className="text-white text-2xl font-bold lg:hidden block"

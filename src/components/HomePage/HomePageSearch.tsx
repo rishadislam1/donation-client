@@ -8,7 +8,7 @@ const { Search } = Input;
 
 const HomePageSearch = () => {
   return (
-    <div className="flex flex-col justify-center items-center">
+    <div className="flex flex-col justify-center items-center cursor-auto">
       <h1>I Grow By Helping People In Need</h1>
       <Space direction="vertical">
         <Search
@@ -16,6 +16,7 @@ const HomePageSearch = () => {
           allowClear
           enterButton="Search"
           size="large"
+          className="cursor-auto"
           //   onSearch={onSearch}
         />
       </Space>
