@@ -14,6 +14,9 @@ import "aos/dist/aos.css";
 import { useEffect } from "react";
 import { signIn } from "next-auth/react";
 import { useLoginMutation } from "@/redux/features/auth/authApi";
+import { redirect } from "next/navigation";
+import { useAppDispatch } from "@/redux/hooks";
+import { userLoggedIn } from "@/redux/features/auth/authSlice";
 
 const Login = () => {
   useEffect(() => {
@@ -21,7 +24,7 @@ const Login = () => {
   }, []);
 
   // signup apis
-
+  const dispatch = useAppDispatch();
   const [login, { data: signUpData, isLoading }] = useLoginMutation();
 
   const handleSignup = (e: React.FormEvent<HTMLInputElement>): void => {
@@ -46,9 +49,27 @@ const Login = () => {
         icon: "error",
         confirmButtonText: "OK",
       });
-    }
-    else{
-      
+    } else {
+      localStorage.setItem(
+        "auth",
+        JSON.stringify({
+          accessToken: signUpData.accessToken,
+          user: signUpData.newUser,
+        })
+      );
+      dispatch(
+        userLoggedIn({
+          accessToken: signUpData.accessToken,
+          user: signUpData.newUser,
+        })
+      );
+      if(signUpData.newUser.role === 'admin'){
+        return redirect("/admin/profile");
+      }
+      else{
+        return redirect('/user/profile')
+      }
+
     }
   }
   // google
