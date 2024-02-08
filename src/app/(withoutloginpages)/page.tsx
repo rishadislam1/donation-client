@@ -9,7 +9,7 @@ export const metadata: Metadata = {
 
 const HomePage = () => {
   return (
-    <div className="cursor-auto">
+    <div className="cursor-auto mt-52">
       <AnimCursor />
       <HomePageSearch />
       <HomeBanner />

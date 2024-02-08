@@ -112,7 +112,7 @@ const NavbarHome = () => {
     </>
   );
   return (
-    <div className="lg:flex justify-around items-center bg-gray-900 rounded px-10 py-2 cursor-auto">
+    <div className="lg:flex justify-around items-center bg-gray-900 rounded px-10 py-2 cursor-auto fixed top-0 w-full z-50">
       <div className="flex items-center gap-10 ">
         <div
           className="text-white text-2xl font-bold lg:hidden block"

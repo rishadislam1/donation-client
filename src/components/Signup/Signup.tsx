@@ -13,11 +13,16 @@ import AOS from "aos";
 import "aos/dist/aos.css";
 import { useEffect } from "react";
 import { signIn } from "next-auth/react";
+import { useRegisterMutation } from "@/redux/features/auth/authApi";
 
 const Signup = () => {
   useEffect(() => {
     AOS.init({ duration: 1000 });
   }, []);
+
+  // signup apis
+
+  const [register, { data: signUpData, isLoading }] = useRegisterMutation();
 
   const handleSignup = (e: React.FormEvent<HTMLInputElement>): void => {
     e.preventDefault();
@@ -36,12 +41,23 @@ const Signup = () => {
       });
     } else {
       const data = {
-        name,
         email,
+        name,
         password,
       };
+      register(data);
     }
   };
+
+  // check
+  if(!isLoading && signUpData){
+    Swal.fire({
+      title: "Success",
+      text: "Registration Successful. Now go to login and login with your credential",
+      icon: "success",
+      confirmButtonText: "Thanks",
+    });
+  }
   // google
   const handleGoogle = () => {
     signIn("google", {

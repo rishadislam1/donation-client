@@ -1,6 +1,6 @@
 "use client";
 
-import loginImg from "@/assets/signin-image.jpg";
+import LoginImg from "@/assets/signin-image.jpg";
 import Image from "next/image";
 import { UserOutlined, MailOutlined, LockOutlined } from "@ant-design/icons";
 import { Input } from "antd";
@@ -13,13 +13,18 @@ import AOS from "aos";
 import "aos/dist/aos.css";
 import { useEffect } from "react";
 import { signIn } from "next-auth/react";
+import { useLoginMutation } from "@/redux/features/auth/authApi";
 
 const Login = () => {
   useEffect(() => {
     AOS.init({ duration: 1000 });
   }, []);
 
-  const handleLogin = (e: React.FormEvent<HTMLInputElement>): void => {
+  // signup apis
+
+  const [login, { data: signUpData, isLoading }] = useLoginMutation();
+
+  const handleSignup = (e: React.FormEvent<HTMLInputElement>): void => {
     e.preventDefault();
     const form = e.currentTarget;
 
@@ -30,7 +35,22 @@ const Login = () => {
       email,
       password,
     };
+    login(data);
   };
+  // check
+  if (!isLoading && signUpData) {
+    if (signUpData.status === false) {
+      Swal.fire({
+        title: "Fail",
+        text: `${signUpData.message}`,
+        icon: "error",
+        confirmButtonText: "OK",
+      });
+    }
+    else{
+      
+    }
+  }
   // google
   const handleGoogle = () => {
     signIn("google", {
@@ -47,22 +67,20 @@ const Login = () => {
   return (
     <div>
       <div className="grid grid-cols-1 md:grid-cols-2 gap-20 items-center cursor-auto">
-        {/* imaage */}
         <div data-aos="fade-right" className="flex justify-center items-center">
           <Image
-            src={loginImg}
+            src={LoginImg}
             height={"auto"}
             width={"100%"}
             alt="signup Image"
           />
         </div>
-        {/* details */}
         <div
           className="flex flex-col justify-start items-start"
           data-aos="fade-left"
         >
           <h1>Login Here</h1>
-          <form onSubmit={handleLogin}>
+          <form onSubmit={handleSignup}>
             {/* email */}
 
             <div className="mt-5">
@@ -93,13 +111,13 @@ const Login = () => {
             {/* submit */}
 
             <button
-              className="mt-10 border-none bg-transparent cursor-pointer"
+              className="mt-10 border-none bg-transparent cursor-pointer flex"
               type="submit"
             >
               <CustomButton
                 type="submit"
-                btnText="Login"
-                customCss="text-blue-700 font-bold hover:text-orange-500"
+                btnText="LogIn"
+                customCss="text-blue-700 font-bold"
               />
             </button>
           </form>
@@ -109,7 +127,7 @@ const Login = () => {
             <hr className="text-gray-200 w-full" />
           </div>
           <div className="mt-3">
-            <h3>Login With</h3>
+            <h3>SignUp With</h3>
             <div className="flex justify-center items-center gap-10 text-xl cursor-pointer">
               <button
                 onClick={handleGithub}
@@ -128,7 +146,7 @@ const Login = () => {
           {/* not account */}
           <div className="mt-3">
             <p>
-              Do Not Have an Account?
+              {"Don't have An Account?"}
               <Link href="/signup">
                 <strong className="ml-2 text-blue-500 cursor-pointer">
                   SignUp here
