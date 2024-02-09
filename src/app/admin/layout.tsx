@@ -5,7 +5,11 @@ import { useAppDispatch, useAppSelector } from "@/redux/hooks";
 import { redirect } from "next/navigation";
 import { useEffect, useState } from "react";
 import Swal from "sweetalert2";
-import { HomeOutlined, UsergroupAddOutlined,NotificationOutlined } from "@ant-design/icons";
+import {
+  HomeOutlined,
+  UsergroupAddOutlined,
+  NotificationOutlined,
+} from "@ant-design/icons";
 import type { MenuProps } from "antd";
 import { Breadcrumb, Layout, Menu, theme } from "antd";
 import Link from "next/link";
@@ -64,14 +68,12 @@ const items: MenuItem[] = [
 ];
 
 const AdminLayout = ({ children }: { children: React.ReactNode }) => {
-
-    useEffect(() => {
-      AOS.init({ duration: 1000 });
-    }, []);
-
+  useEffect(() => {
+    AOS.init({ duration: 1000 });
+  }, []);
 
   const dispatch = useAppDispatch();
-  
+
   useEffect(() => {
     // Access localStorage directly
     const allData = JSON.parse(localStorage?.getItem("auth"));
@@ -96,7 +98,7 @@ const AdminLayout = ({ children }: { children: React.ReactNode }) => {
 
   const { user } = useAppSelector((state) => state.auth);
 
-  const [collapsed, setCollapsed] = useState(false);
+  const [collapsed, setCollapsed] = useState(true);
 
   return (
     <Layout style={{ minHeight: "100vh" }}>

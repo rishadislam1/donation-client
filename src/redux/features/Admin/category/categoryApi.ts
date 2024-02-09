@@ -7,9 +7,14 @@ export const categoryApi = apiSlice.injectEndpoints({
                 url: `/addcategory/${email}`,
                 method: "POST",
                 body: data
-            })
+            }),
+            invalidatesTags: ['category']
+        }),
+        getCategory: builder.query({
+            query: (email)=>`/getcategory/${email}`,
+            providesTags: ['category']
         })
     })
 });
 
-export const {useAddCategoryMutation} = categoryApi;
+export const {useAddCategoryMutation, useGetCategoryQuery} = categoryApi;

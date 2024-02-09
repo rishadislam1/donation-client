@@ -9,40 +9,33 @@ import {
   PlusOutlined,
 } from "@ant-design/icons";
 import CustomButton from "@/components/CustomButton/CustomButton";
-import { useAddCategoryMutation } from "@/redux/features/Admin/category/categoryApi";
+import {
+  useAddCategoryMutation,
+  useGetCategoryQuery,
+} from "@/redux/features/Admin/category/categoryApi";
 import { useAppSelector } from "@/redux/hooks";
 import Swal from "sweetalert2";
 import type { GetProp, UploadProps } from "antd";
 import { useState } from "react";
 import { BallTriangle } from "react-loader-spinner";
-
-// image all
-
-type FileType = Parameters<GetProp<UploadProps, "beforeUpload">>[0];
-
-const getBase64 = (img: FileType, callback: (url: string) => void) => {
-  const reader = new FileReader();
-  reader.addEventListener("load", () => callback(reader.result as string));
-  reader.readAsDataURL(img);
-};
-
-const beforeUpload = (file: FileType) => {
-  const isJpgOrPng = file.type === "image/jpeg" || file.type === "image/png";
-  if (!isJpgOrPng) {
-    message.error("You can only upload JPG/PNG file!");
-  }
-  const isLt2M = file.size / 1024 / 1024 < 100;
-  if (!isLt2M) {
-    message.error("Image must smaller than 100MB!");
-  }
-  return isJpgOrPng && isLt2M;
-};
+import { MdDeleteForever } from "react-icons/md";
+import Image from "next/image";
 
 const AddCategory = () => {
   const { user } = useAppSelector((state) => state.auth);
   const email = user?.email;
   const [addCategory, { isLoading, data: categoryData }] =
     useAddCategoryMutation();
+  const { data: category, isLoading: categoryLoading } =
+    useGetCategoryQuery(email);
+
+  // interface
+
+  interface ICategory {
+    name: string;
+    title: string;
+    image: string;
+  }
 
   //   handle category
 
@@ -111,6 +104,29 @@ const AddCategory = () => {
       confirmButtonText: "Ok",
     });
   }
+
+  //   handle delete
+
+  const handleDelete = (items: ICategory) => {
+    Swal.fire({
+        title: "Are you sure?",
+        text: "You won't be able to revert this!",
+        icon: "warning",
+        showCancelButton: true,
+        confirmButtonColor: "#3085d6",
+        cancelButtonColor: "#d33",
+        confirmButtonText: "Yes, delete it!"
+      }).then((result) => {
+        if (result.isConfirmed) {
+            
+          Swal.fire({
+            title: "Deleted!",
+            text: "Your file has been deleted.",
+            icon: "success"
+          });
+        }
+      });
+  };
   return (
     <div data-aos="fade-right">
       <h1>Add A New Category For Donation</h1>
@@ -139,7 +155,12 @@ const AddCategory = () => {
         <div className="mt-5">
           <label>Category Image*</label> <br />
           <br />
-          <input type="file" name="image" id="" />
+          <input
+            type="file"
+            name="image"
+            id="image"
+            accept=".jpg, .jpeg, .png"
+          />
         </div>
 
         <button
@@ -153,6 +174,50 @@ const AddCategory = () => {
           />
         </button>
       </form>
+
+      <div className="overflow-auto">
+        <table className="table w-full ">
+          {/* head */}
+          <thead>
+            <tr className="font-bold text-black text-lg">
+              <th>#</th>
+              <th>Category Name</th>
+              <th>Category Title</th>
+              <th>Image</th>
+              <th>ACTION</th>
+            </tr>
+          </thead>
+          <tbody>
+            {category?.result?.map((item, index) => (
+              <tr key={item._id}>
+                <th>{index + 1}</th>
+                <th>
+                  <h1 className="font-bold text-xl">{item.name}</h1>
+                </th>
+                <th>{item.title}</th>
+                <th>
+                  <Image
+                    src={item.image}
+                    height={100}
+                    width={100}
+                    alt={item.title}
+                  />
+                </th>
+
+                <th className="">
+                  <button
+                    onClick={() => handleDelete(item)}
+                    className="py-2 border-none btn cursor-pointer rounded-xl bg-red-500 text-white ml-5"
+                  >
+                    <MdDeleteForever className=" font-bold text-xl" />
+                  </button>
+                </th>
+              </tr>
+            ))}
+            {/* row 1 */}
+          </tbody>
+        </table>
+      </div>
     </div>
   );
 };
