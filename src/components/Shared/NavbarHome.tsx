@@ -46,7 +46,7 @@ const NavbarHome = () => {
         <li className="cursor-pointer">About</li>
       </Link>
       <Link
-        href="/donation"
+        href="/donation/all"
         className={`text-white ${
           pathName === "/donation"
             ? "text-yellow-500"

@@ -26,7 +26,7 @@ const HomePageCategory = () => {
   } else {
     return (
       <div
-        data-aos="fade-down"
+      data-aos="fade-down"
         className="flex flex-col justify-center items-center text-center"
       >
         <h1 className="text-center mt-20 mb-10">OUR ALL CATEGORY FOR DONETS</h1>
