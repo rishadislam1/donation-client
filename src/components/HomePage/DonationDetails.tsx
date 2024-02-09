@@ -1,7 +1,7 @@
 "use client";
 import { useGetCategoryQuery } from "@/redux/features/Admin/category/categoryApi";
 import { useGetCategoryDetailsQuery } from "@/redux/features/Admin/categoryDetails/categoryDetailsApi";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { Tab, Tabs, TabList, TabPanel } from "react-tabs";
 import "react-tabs/style/react-tabs.css";
 import { Card } from "antd";
@@ -16,13 +16,20 @@ const DonationDetails = ({ id }) => {
   const { data: categoryDetailsData } = useGetCategoryDetailsQuery();
 
   const [loadMore, setLoadMore] = useState(false);
-  console.log(loadMore);
+  const categoryNames = ["all", "education", "clothing", "food", "medical", "health"];
+  const initialIndex = categoryNames.indexOf(id);
+
+  const [tabIndex, setTabIndex] = useState(initialIndex);
   return (
     <div
       data-aos="fade-right"
       className="flex flex-col justify-center items-center"
     >
-      <Tabs data-aos="fade-right">
+      <Tabs
+        data-aos="fade-right"
+        selectedIndex={tabIndex}
+        onSelect={(index) => setTabIndex(index)}
+      >
         <TabList>
           <Tab>All</Tab>
           {categoryData?.result?.map((category) => (

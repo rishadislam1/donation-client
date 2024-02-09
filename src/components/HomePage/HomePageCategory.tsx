@@ -26,13 +26,17 @@ const HomePageCategory = () => {
   } else {
     return (
       <div
-      data-aos="fade-down"
+        data-aos="fade-down"
         className="flex flex-col justify-center items-center text-center"
       >
         <h1 className="text-center mt-20 mb-10">OUR ALL CATEGORY FOR DONETS</h1>
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 justify-center items-center gap-10">
           {categoryData?.result?.map((category) => (
-            <Link key={category._id} href="/" className="no-underline">
+            <Link
+              key={category._id}
+              href={`/donation/${category.name}`}
+              className="no-underline"
+            >
               <Card
                 hoverable
                 style={{ width: 240 }}
@@ -45,7 +49,10 @@ const HomePageCategory = () => {
                   />
                 }
               >
-                <Meta title={category.name} description={category.categoryName} />
+                <Meta
+                  title={category.name}
+                  description={category.categoryName}
+                />
               </Card>
             </Link>
           ))}
