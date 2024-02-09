@@ -7,13 +7,23 @@ import { CiMenuBurger } from "react-icons/ci";
 import { usePathname } from "next/navigation";
 import { IoMdClose } from "react-icons/io";
 import CustomButton from "../CustomButton/CustomButton";
+import { useAppDispatch, useAppSelector } from "@/redux/hooks";
+import { userLoggedOut } from "@/redux/features/auth/authSlice";
 
 const NavbarHome = () => {
   const [open, setOpen] = useState(false);
+  const dispatch = useAppDispatch();
+
+  const { user } = useAppSelector((state) => state.auth);
 
   // handle toggle
   const handleOpen = () => {
     setOpen(!open);
+  };
+
+  const handleLogout = () => {
+    dispatch(userLoggedOut());
+    localStorage.clear();
   };
   const pathName = usePathname();
   const items = (
@@ -83,24 +93,53 @@ const NavbarHome = () => {
       >
         <li className="cursor-pointer">Contact Us</li>
       </Link>
+      {user?.email ? (
+        <>
+          <Link
+            href={`${
+              user?.role === "admin" ? "/admin/profile" : "/user/profile"
+            }`}
+            className={`text-white ${
+              pathName === "/user/profile"
+                ? "text-yellow-500"
+                : "text-white no-underline	"
+            } hover:line-through transition-all duration-700`}
+          >
+            <li className="cursor-pointer">Profile</li>
+          </Link>
+          <button
+            onClick={handleLogout}
+            className={`text-white  hover:line-through transition-all duration-700 py-2 px-4 rounded-xl bg-orange-500 border-none cursor-auto`}
+          >
+            <li className="cursor-pointer">Logout</li>
+          </button>
+        </>
+      ) : (
+        <>
+          <Link
+            href="/login"
+            className={`text-white ${
+              pathName === "/login"
+                ? "text-yellow-500"
+                : "text-white no-underline	"
+            } hover:line-through transition-all duration-700`}
+          >
+            <li className="cursor-pointer">Login</li>
+          </Link>
+          <Link
+            href="/signup"
+            className={`text-white ${
+              pathName === "/signup"
+                ? "text-yellow-500"
+                : "text-white no-underline	"
+            } hover:line-through transition-all duration-700`}
+          >
+            <li className="cursor-pointer">Register</li>
+          </Link>
+        </>
+      )}
       <Link
-        href="/login"
-        className={`text-white ${
-          pathName === "/login" ? "text-yellow-500" : "text-white no-underline	"
-        } hover:line-through transition-all duration-700`}
-      >
-        <li className="cursor-pointer">Login</li>
-      </Link>
-      <Link
-        href="/signup"
-        className={`text-white ${
-          pathName === "/signup" ? "text-yellow-500" : "text-white no-underline	"
-        } hover:line-through transition-all duration-700`}
-      >
-        <li className="cursor-pointer">Register</li>
-      </Link>
-      <Link
-        href="/donate"
+        href="/user/donate"
         className={`text-white ${
           pathName === "/contact"
             ? "text-yellow-500"

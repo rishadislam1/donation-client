@@ -53,13 +53,13 @@ const HandleLoginContent = () => {
       "auth",
       JSON.stringify({
         accessToken: registerUser?.accessToken,
-        user: session?.user,
+        user: registerUser?.result,
       })
     );
     dispatch(
       userLoggedIn({
         accessToken: registerUser?.accessToken,
-        user: session?.user,
+        user: registerUser?.result,
       })
     );
     return redirect("/user/profile");
