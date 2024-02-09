@@ -5,11 +5,13 @@ import { useAppDispatch, useAppSelector } from "@/redux/hooks";
 import { redirect } from "next/navigation";
 import { useEffect, useState } from "react";
 import Swal from "sweetalert2";
-import { HomeOutlined } from "@ant-design/icons";
+import { HomeOutlined, UsergroupAddOutlined,NotificationOutlined } from "@ant-design/icons";
 import type { MenuProps } from "antd";
 import { Breadcrumb, Layout, Menu, theme } from "antd";
 import Link from "next/link";
 import AnimCursor from "@/components/AnimCursor";
+import AOS from "aos";
+import "aos/dist/aos.css";
 
 const { Header, Content, Footer, Sider } = Layout;
 
@@ -22,26 +24,54 @@ interface MenuItem {
 const items: MenuItem[] = [
   {
     label: (
-      <Link href="/admin/profile" rel="noopener noreferrer">
+      <Link
+        href="/admin/profile"
+        rel="noopener noreferrer"
+        className="cursor-pointer"
+      >
         Admin Home
       </Link>
     ),
-    key: "alipay",
+    key: "adminHome",
     icon: <HomeOutlined />,
   },
   {
     label: (
-      <Link href="/admin/user" rel="noopener noreferrer">
+      <Link
+        href="/admin/user"
+        rel="noopener noreferrer"
+        className="cursor-pointer"
+      >
         All User
       </Link>
     ),
-    key: "alipay",
-    icon: <HomeOutlined />,
+    key: "allUser",
+    icon: <UsergroupAddOutlined />,
+  },
+  {
+    label: (
+      <Link
+        href="/admin/addcategory"
+        rel="noopener noreferrer"
+        className="cursor-pointer"
+      >
+        Add Category
+      </Link>
+    ),
+    key: "addcategory",
+    icon: <NotificationOutlined />,
   },
 ];
 
 const AdminLayout = ({ children }: { children: React.ReactNode }) => {
+
+    useEffect(() => {
+      AOS.init({ duration: 1000 });
+    }, []);
+
+
   const dispatch = useAppDispatch();
+  
   useEffect(() => {
     // Access localStorage directly
     const allData = JSON.parse(localStorage?.getItem("auth"));
@@ -84,7 +114,6 @@ const AdminLayout = ({ children }: { children: React.ReactNode }) => {
           mode="inline"
           items={items}
         />
-        {/* <Link href="/admin/profile">Home</Link> */}
       </Sider>
       <Layout>
         <Content style={{ margin: "0 16px" }} className="cursor-auto">
