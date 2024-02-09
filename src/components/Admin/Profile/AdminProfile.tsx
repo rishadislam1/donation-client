@@ -5,7 +5,7 @@ const AdminProfile = () => {
   const { user } = useAppSelector((state) => state.auth);
   return (
     <div  data-aos="fade-right">
-      <h1>Welcome Back Admin {user.name}</h1>
+      <h1>Welcome Back Admin {user?.name}</h1>
     </div>
   );
 };

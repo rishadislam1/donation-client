@@ -9,6 +9,7 @@ import {
   HomeOutlined,
   UsergroupAddOutlined,
   NotificationOutlined,
+  OrderedListOutlined,
 } from "@ant-design/icons";
 import type { MenuProps } from "antd";
 import { Breadcrumb, Layout, Menu, theme } from "antd";
@@ -23,6 +24,7 @@ interface MenuItem {
   label: React.ReactNode;
   key: React.Key;
   icon?: React.ReactNode;
+  children?: MenuItem[];
 }
 
 const items: MenuItem[] = [
@@ -41,16 +43,40 @@ const items: MenuItem[] = [
   },
   {
     label: (
-      <Link
-        href="/admin/volunteer"
-        rel="noopener noreferrer"
-        className="cursor-pointer"
-      >
-        Volunteer List
+      <Link href="#" rel="noopener noreferrer" className="cursor-pointer">
+        Volunteer
       </Link>
     ),
-    key: "allUser",
+    key: "volunteer",
     icon: <UsergroupAddOutlined />,
+    children: [
+      {
+        label: (
+          <Link
+            href="/admin/volunteer"
+            rel="noopener noreferrer"
+            className="cursor-pointer"
+          >
+            Volunteer List
+          </Link>
+        ),
+        key: "volunteerlist",
+        icon: <UsergroupAddOutlined />,
+      },
+      {
+        label: (
+          <Link
+            href="/admin/volunteerRequest"
+            rel="noopener noreferrer"
+            className="cursor-pointer"
+          >
+            Volunteer Request
+          </Link>
+        ),
+        key: "volunteerRequest",
+        icon: <UsergroupAddOutlined />,
+      },
+    ],
   },
   {
     label: (
@@ -63,6 +89,59 @@ const items: MenuItem[] = [
       </Link>
     ),
     key: "addcategory",
+    icon: <NotificationOutlined />,
+  },
+  {
+    label: (
+      <Link
+        href="/admin/listingcategory"
+        rel="noopener noreferrer"
+        className="cursor-pointer"
+      >
+        Listing Category
+      </Link>
+    ),
+    key: "listingcategory",
+    icon: <OrderedListOutlined />,
+  },
+];
+
+// item2
+
+const items2: MenuItem[] = [
+  {
+    label: (
+      <Link
+        href="/"
+        rel="noopener noreferrer"
+        className="cursor-pointer"
+      >
+        Home
+      </Link>
+    ),
+    key: "mainHome",
+    icon: <HomeOutlined />,
+  },
+  {
+    label: (
+      <Link href="/about" rel="noopener noreferrer" className="cursor-pointer">
+        About
+      </Link>
+    ),
+    key: "about",
+    icon: <UsergroupAddOutlined />,
+  },
+  {
+    label: (
+      <Link
+        href="/contact"
+        rel="noopener noreferrer"
+        className="cursor-pointer"
+      >
+        Contact Us
+      </Link>
+    ),
+    key: "contact",
     icon: <NotificationOutlined />,
   },
 ];
@@ -115,6 +194,16 @@ const AdminLayout = ({ children }: { children: React.ReactNode }) => {
           defaultSelectedKeys={["1"]}
           mode="inline"
           items={items}
+        />
+        <div className="w-full flex justify-center items-center text-gray-300 gap-5">
+          <hr className="w-full" />
+          OR <hr className="w-full" />
+        </div>
+        <Menu
+          theme="dark"
+          defaultSelectedKeys={["1"]}
+          mode="inline"
+          items={items2}
         />
       </Sider>
       <Layout>

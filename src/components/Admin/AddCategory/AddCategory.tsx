@@ -28,7 +28,7 @@ const AddCategory = () => {
   const [addCategory, { isLoading, data: categoryData }] =
     useAddCategoryMutation();
   const { data: category, isLoading: categoryLoading } =
-    useGetCategoryQuery(email);
+    useGetCategoryQuery();
   const [deleteCategory, { isLoading: deleteLoading, data: deleteData }] =
     useDeleteCategoryMutation();
 

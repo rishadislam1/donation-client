@@ -1,5 +1,6 @@
 import AnimCursor from "@/components/AnimCursor";
 import HomeBanner from "@/components/HomePage/HomeBanner";
+import HomePageCategory from "@/components/HomePage/HomePageCategory";
 import HomePageSearch from "@/components/HomePage/HomePageSearch";
 
 export const metadata: Metadata = {
@@ -13,6 +14,7 @@ const HomePage = () => {
       <AnimCursor />
       <HomePageSearch />
       <HomeBanner />
+      <HomePageCategory/>
     </div>
   );
 };

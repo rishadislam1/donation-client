@@ -11,7 +11,7 @@ export const categoryApi = apiSlice.injectEndpoints({
       invalidatesTags: ["category"],
     }),
     getCategory: builder.query({
-      query: (email) => `/getcategory/${email}`,
+      query: () => `/getcategory`,
       providesTags: ["category"],
     }),
     deleteCategory: builder.mutation({
