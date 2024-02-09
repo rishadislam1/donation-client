@@ -9,9 +9,7 @@ import {
   PlusOutlined,
 } from "@ant-design/icons";
 import CustomButton from "@/components/CustomButton/CustomButton";
-import {
-  useGetCategoryQuery,
-} from "@/redux/features/Admin/category/categoryApi";
+import { useGetCategoryQuery } from "@/redux/features/Admin/category/categoryApi";
 import { useAppSelector } from "@/redux/hooks";
 import Swal from "sweetalert2";
 import type { GetProp, UploadProps } from "antd";
@@ -136,10 +134,10 @@ const ListingCategory = () => {
         console.log();
         deleteCategory({ email, id });
         Swal.fire({
-            title: "Deleted!",
-            text: "Your file has been deleted.",
-            icon: "success",
-          });
+          title: "Deleted!",
+          text: "Your file has been deleted.",
+          icon: "success",
+        });
       }
     });
   };

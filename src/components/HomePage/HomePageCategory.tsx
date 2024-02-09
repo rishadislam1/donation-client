@@ -45,7 +45,7 @@ const HomePageCategory = () => {
                   />
                 }
               >
-                <Meta title={category.name} description={category.title} />
+                <Meta title={category.name} description={category.categoryName} />
               </Card>
             </Link>
           ))}
