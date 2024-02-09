@@ -22,15 +22,16 @@ import { BallTriangle } from "react-loader-spinner";
 import { MdDeleteForever } from "react-icons/md";
 import Image from "next/image";
 import TextArea from "antd/es/input/TextArea";
+import { useAddCategoryDetailsMutation } from "@/redux/features/Admin/categoryDetails/categoryDetailsApi";
 
 const ListingCategory = () => {
   const { user } = useAppSelector((state) => state.auth);
   const email = user?.email;
-  const [addCategory, { isLoading, data: categoryData }] =
-    useAddCategoryMutation();
   const { data: category, isLoading: categoryLoading } = useGetCategoryQuery();
   const [deleteCategory, { isLoading: deleteLoading, data: deleteData }] =
     useDeleteCategoryMutation();
+
+    const [addCategoryDetails,{isLoading, data:categoryDetails}] = useAddCategoryDetailsMutation();
 
   // interface
 
@@ -48,7 +49,8 @@ const ListingCategory = () => {
     e.preventDefault();
     const form = e.currentTarget;
     const name = form.name.value.toLowerCase();
-    const title = form.title.value;
+    const categoryName = form.categoryName.value;
+    const description = form.description.value;
     const categoryImage = form.image.files[0];
     const image_hosting =
       "https://api.imgbb.com/1/upload?expiration=600&key=496cd83f6d0a12aa50bec50d47669908";
@@ -72,10 +74,11 @@ const ListingCategory = () => {
         // Use imageData.url in your data object
         const data = {
           name,
-          title,
+          categoryName,
+          description,
           image: imageData?.data?.url,
         };
-        addCategory({ data, email });
+        addCategoryDetails({email,data});
         form.reset();
       } catch (error) {
         Swal.fire({
@@ -87,7 +90,7 @@ const ListingCategory = () => {
       }
     }
   };
-  if (isLoading && categoryData?.status !== true) {
+  if (isLoading && categoryDetails?.status !== true) {
     <BallTriangle
       height={50}
       width={50}
@@ -99,10 +102,10 @@ const ListingCategory = () => {
       visible={true}
     />;
   }
-  if (!isLoading && categoryData?.status === true) {
+  if (!isLoading && categoryDetails?.status === true) {
     Swal.fire({
       title: "Success!",
-      text: "Category Added Successfully",
+      text: "CategoryDetails Added Successfully",
       icon: "success",
       confirmButtonText: "Ok",
     });
@@ -152,7 +155,7 @@ const ListingCategory = () => {
 
         <div className="mt-5">
           <label> Description*</label>
-          <TextArea rows={4} placeholder="Description" required />
+          <TextArea rows={4} placeholder="Description" name="description" required />
         </div>
 
         <div className="mt-5">
@@ -188,7 +191,7 @@ const ListingCategory = () => {
         >
           <CustomButton
             type="submit"
-            btnText="Add Category Details"
+            btnText="Add Details"
             customCss="text-blue-700 font-bold"
           />
         </button>
