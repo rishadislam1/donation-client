@@ -122,7 +122,6 @@ const AddCategory = () => {
     }).then((result) => {
       if (result.isConfirmed) {
         const id = items._id;
-        console.log();
         deleteCategory({ email, id });
       }
     });

@@ -10,8 +10,6 @@ import {
 } from "@ant-design/icons";
 import CustomButton from "@/components/CustomButton/CustomButton";
 import {
-  useAddCategoryMutation,
-  useDeleteCategoryMutation,
   useGetCategoryQuery,
 } from "@/redux/features/Admin/category/categoryApi";
 import { useAppSelector } from "@/redux/hooks";
@@ -22,16 +20,26 @@ import { BallTriangle } from "react-loader-spinner";
 import { MdDeleteForever } from "react-icons/md";
 import Image from "next/image";
 import TextArea from "antd/es/input/TextArea";
-import { useAddCategoryDetailsMutation } from "@/redux/features/Admin/categoryDetails/categoryDetailsApi";
+import {
+  useAddCategoryDetailsMutation,
+  useDeleteCategoryDetailsMutation,
+  useGetCategoryDetailsQuery,
+} from "@/redux/features/Admin/categoryDetails/categoryDetailsApi";
 
 const ListingCategory = () => {
+  const [categorySelect, setCategorySelect] = useState("");
+
   const { user } = useAppSelector((state) => state.auth);
   const email = user?.email;
   const { data: category, isLoading: categoryLoading } = useGetCategoryQuery();
   const [deleteCategory, { isLoading: deleteLoading, data: deleteData }] =
-    useDeleteCategoryMutation();
+    useDeleteCategoryDetailsMutation();
 
-    const [addCategoryDetails,{isLoading, data:categoryDetails}] = useAddCategoryDetailsMutation();
+  const [addCategoryDetails, { isLoading, data: categoryDetails }] =
+    useAddCategoryDetailsMutation();
+
+  const { data: categoryDetailsData, isLoading: categoryDetailsLoading } =
+    useGetCategoryDetailsQuery();
 
   // interface
 
@@ -78,7 +86,7 @@ const ListingCategory = () => {
           description,
           image: imageData?.data?.url,
         };
-        addCategoryDetails({email,data});
+        addCategoryDetails({ email, data });
         form.reset();
       } catch (error) {
         Swal.fire({
@@ -127,17 +135,21 @@ const ListingCategory = () => {
         const id = items._id;
         console.log();
         deleteCategory({ email, id });
+        Swal.fire({
+            title: "Deleted!",
+            text: "Your file has been deleted.",
+            icon: "success",
+          });
       }
     });
   };
 
-  if (!deleteLoading && deleteData) {
-    Swal.fire({
-      title: "Deleted!",
-      text: "Your file has been deleted.",
-      icon: "success",
-    });
-  }
+  //   hanlde seelct
+
+  const handleSelect = (e: React.FormEvent<HTMLInputElement>) => {
+    setCategorySelect(e.currentTarget.value);
+  };
+
   return (
     <div data-aos="fade-right">
       <h1>Add A New Category List For Donation</h1>
@@ -155,7 +167,12 @@ const ListingCategory = () => {
 
         <div className="mt-5">
           <label> Description*</label>
-          <TextArea rows={4} placeholder="Description" name="description" required />
+          <TextArea
+            rows={4}
+            placeholder="Description"
+            name="description"
+            required
+          />
         </div>
 
         <div className="mt-5">
@@ -197,45 +214,68 @@ const ListingCategory = () => {
         </button>
       </form>
 
-      <div className="overflow-auto">
+      <div className="overflow-auto mt-10 flex flex-col justify-center items-center">
+        <h1 className="text-center mb-10">
+          Select an option for see category details
+        </h1>
+        <select
+          name="cate"
+          className="border-none bg-gray-300  px-5 py-2 rounded-xl mb-20"
+          onChange={handleSelect}
+        >
+          {category?.result?.map((categoryList) => (
+            <option value={categoryList.name} key={categoryList._id}>
+              {categoryList.name}
+            </option>
+          ))}
+        </select>
+
         <table className="table w-full ">
           {/* head */}
           <thead>
             <tr className="font-bold text-black text-lg">
               <th>#</th>
+              <th>Title</th>
               <th>Category Name</th>
-              <th>Category Title</th>
+              <th>Description</th>
               <th>Image</th>
               <th>ACTION</th>
             </tr>
           </thead>
           <tbody>
-            {category?.result?.map((item, index) => (
-              <tr key={item._id}>
-                <th>{index + 1}</th>
-                <th>
-                  <h1 className="font-bold text-xl">{item.name}</h1>
-                </th>
-                <th>{item.title}</th>
-                <th>
-                  <Image
-                    src={item.image}
-                    height={100}
-                    width={100}
-                    alt={item.title}
-                  />
-                </th>
+            {categoryDetailsData?.result
+              ?.filter((cat) => cat.categoryName === categorySelect)
+              .map((item, index) => (
+                <tr key={item._id}>
+                  <th>{index + 1}</th>
+                  <th>
+                    <h1 className="font-bold text-xl">{item.name}</h1>
+                  </th>
+                  <th>{item.categoryName}</th>
+                  <th className="w-1/2">
+                    <p className="text-wrap">
+                      {item.description.slice(0, 100) + "..."}
+                    </p>
+                  </th>
+                  <th>
+                    <Image
+                      src={item.image}
+                      height={100}
+                      width={100}
+                      alt={item.title}
+                    />
+                  </th>
 
-                <th className="">
-                  <button
-                    onClick={() => handleDelete(item)}
-                    className="py-2 border-none btn cursor-pointer rounded-xl bg-red-500 text-white ml-5"
-                  >
-                    <MdDeleteForever className=" font-bold text-xl" />
-                  </button>
-                </th>
-              </tr>
-            ))}
+                  <th className="">
+                    <button
+                      onClick={() => handleDelete(item)}
+                      className="py-2 border-none btn cursor-pointer rounded-xl bg-red-500 text-white ml-5"
+                    >
+                      <MdDeleteForever className=" font-bold text-xl" />
+                    </button>
+                  </th>
+                </tr>
+              ))}
             {/* row 1 */}
           </tbody>
         </table>

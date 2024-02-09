@@ -1,7 +1,7 @@
 /** @type {import('next').NextConfig} */
 const nextConfig = {
     images: {
-      domains: ['i.ibb.co'],
+      domains: ['i.ibb.co','ibb.co'],
     },
     env: {
         GITHUB_ID: "Iv1.2c682cdbd1b9403c",

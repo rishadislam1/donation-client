@@ -8,10 +8,24 @@ export const categoryDetailsApi = apiSlice.injectEndpoints({
         method: "POST",
         body: data
       }),
+      invalidatesTags: ['categoryDetails']
     }),
+    getCategoryDetails: builder.query({
+        query: ()=> `/getcategorydetails`,
+        providesTags: ['categoryDetails']
+    }),
+    deleteCategoryDetails: builder.mutation({
+        query: ({ email, id }) => ({
+          url: `/deletecategorydetails/${email}/${id}`,
+          method: "DELETE",
+        }),
+        invalidatesTags: ["categoryDetails"],
+      }),
   }),
 });
 
 export const {
- useAddCategoryDetailsMutation
+ useAddCategoryDetailsMutation,
+ useGetCategoryDetailsQuery,
+ useDeleteCategoryDetailsMutation
 } = categoryDetailsApi;
