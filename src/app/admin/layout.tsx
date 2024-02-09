@@ -42,11 +42,11 @@ const items: MenuItem[] = [
   {
     label: (
       <Link
-        href="/admin/user"
+        href="/admin/volunteer"
         rel="noopener noreferrer"
         className="cursor-pointer"
       >
-        All User
+        Volunteer List
       </Link>
     ),
     key: "allUser",

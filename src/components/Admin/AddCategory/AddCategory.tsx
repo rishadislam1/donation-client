@@ -11,6 +11,7 @@ import {
 import CustomButton from "@/components/CustomButton/CustomButton";
 import {
   useAddCategoryMutation,
+  useDeleteCategoryMutation,
   useGetCategoryQuery,
 } from "@/redux/features/Admin/category/categoryApi";
 import { useAppSelector } from "@/redux/hooks";
@@ -28,6 +29,8 @@ const AddCategory = () => {
     useAddCategoryMutation();
   const { data: category, isLoading: categoryLoading } =
     useGetCategoryQuery(email);
+  const [deleteCategory, { isLoading: deleteLoading, data: deleteData }] =
+    useDeleteCategoryMutation();
 
   // interface
 
@@ -109,24 +112,29 @@ const AddCategory = () => {
 
   const handleDelete = (items: ICategory) => {
     Swal.fire({
-        title: "Are you sure?",
-        text: "You won't be able to revert this!",
-        icon: "warning",
-        showCancelButton: true,
-        confirmButtonColor: "#3085d6",
-        cancelButtonColor: "#d33",
-        confirmButtonText: "Yes, delete it!"
-      }).then((result) => {
-        if (result.isConfirmed) {
-            
-          Swal.fire({
-            title: "Deleted!",
-            text: "Your file has been deleted.",
-            icon: "success"
-          });
-        }
-      });
+      title: "Are you sure?",
+      text: "You won't be able to revert this!",
+      icon: "warning",
+      showCancelButton: true,
+      confirmButtonColor: "#3085d6",
+      cancelButtonColor: "#d33",
+      confirmButtonText: "Yes, delete it!",
+    }).then((result) => {
+      if (result.isConfirmed) {
+        const id = items._id;
+        console.log();
+        deleteCategory({ email, id });
+      }
+    });
   };
+
+  if (!deleteLoading && deleteData) {
+    Swal.fire({
+      title: "Deleted!",
+      text: "Your file has been deleted.",
+      icon: "success",
+    });
+  }
   return (
     <div data-aos="fade-right">
       <h1>Add A New Category For Donation</h1>
