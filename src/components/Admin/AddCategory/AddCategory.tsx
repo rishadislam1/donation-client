@@ -28,13 +28,14 @@ const AddCategory = () => {
   const [addCategory, { isLoading, data: categoryData }] =
     useAddCategoryMutation();
   const { data: category, isLoading: categoryLoading } =
-    useGetCategoryQuery();
+    useGetCategoryQuery(undefined);
   const [deleteCategory, { isLoading: deleteLoading, data: deleteData }] =
     useDeleteCategoryMutation();
 
   // interface
 
   interface ICategory {
+    _id?: string;
     name: string;
     title: string;
     image: string;
@@ -42,13 +43,13 @@ const AddCategory = () => {
 
   //   handle category
 
-  const handleAddCategory = async (
-    e: React.FormEvent<HTMLInputElement>
-  ): void => {
+  const handleAddCategory = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    const form = e.currentTarget;
-    const name = form.name.value.toLowerCase();
-    const title = form.title.value;
+
+    const form = e.currentTarget as HTMLFormElement;
+    const formData = new FormData(e.target as HTMLFormElement);
+    const name = formData.get("name") as string;
+    const title = formData.get("title") as string;
     const categoryImage = form.image.files[0];
     const image_hosting =
       "https://api.imgbb.com/1/upload?expiration=600&key=496cd83f6d0a12aa50bec50d47669908";
@@ -175,7 +176,6 @@ const AddCategory = () => {
           type="submit"
         >
           <CustomButton
-            type="submit"
             btnText="Add Category"
             customCss="text-blue-700 font-bold"
           />
@@ -195,7 +195,7 @@ const AddCategory = () => {
             </tr>
           </thead>
           <tbody>
-            {category?.result?.map((item, index) => (
+            {category?.result?.map((item:ICategory, index:number) => (
               <tr key={item._id}>
                 <th>{index + 1}</th>
                 <th>

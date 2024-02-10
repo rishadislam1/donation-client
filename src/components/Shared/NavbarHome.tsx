@@ -146,7 +146,7 @@ const NavbarHome = () => {
             : "text-white no-underline	"
         } `}
       >
-        <CustomButton btnText={"Donate Now"} />
+        <CustomButton btnText={"Donate Now"} customCss="" />
       </Link>
     </>
   );

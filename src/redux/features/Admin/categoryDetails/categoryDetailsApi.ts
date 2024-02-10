@@ -3,29 +3,33 @@ import { apiSlice } from "../../api/apiSlice";
 export const categoryDetailsApi = apiSlice.injectEndpoints({
   endpoints: (builder) => ({
     addCategoryDetails: builder.mutation({
-      query: ({email,data}) => ({
+      query: ({ email, data }) => ({
         url: `categoryDetails/${email}`,
         method: "POST",
-        body: data
+        body: data,
       }),
-      invalidatesTags: ['categoryDetails']
+      invalidatesTags: ["categoryDetails"],
     }),
     getCategoryDetails: builder.query({
-        query: ()=> `/getcategorydetails`,
-        providesTags: ['categoryDetails']
+      query: () => `/getcategorydetails`,
+      providesTags: ["categoryDetails"],
     }),
     deleteCategoryDetails: builder.mutation({
-        query: ({ email, id }) => ({
-          url: `/deletecategorydetails/${email}/${id}`,
-          method: "DELETE",
-        }),
-        invalidatesTags: ["categoryDetails"],
+      query: ({ email, id }) => ({
+        url: `/deletecategorydetails/${email}/${id}`,
+        method: "DELETE",
       }),
+      invalidatesTags: ["categoryDetails"],
+    }),
+    getOneCategory: builder.query({
+      query: (id) => `/getonecategory/${id}`,
+    }),
   }),
 });
 
 export const {
- useAddCategoryDetailsMutation,
- useGetCategoryDetailsQuery,
- useDeleteCategoryDetailsMutation
+  useAddCategoryDetailsMutation,
+  useGetCategoryDetailsQuery,
+  useDeleteCategoryDetailsMutation,
+  useGetOneCategoryQuery
 } = categoryDetailsApi;

@@ -1,6 +1,10 @@
 import AnimCursor from "@/components/AnimCursor";
 import Login from "@/components/Login/Login";
 import React from "react";
+interface Metadata {
+  title: string;
+  description: string;
+}
 
 export const metadata: Metadata = {
   title: "Donation Website | LogIn",

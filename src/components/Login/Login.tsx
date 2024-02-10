@@ -27,12 +27,13 @@ const Login = () => {
   const dispatch = useAppDispatch();
   const [login, { data: signUpData, isLoading }] = useLoginMutation();
 
-  const handleSignup = (e: React.FormEvent<HTMLInputElement>): void => {
+  const handleSignup = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    const form = e.currentTarget;
+    const form = e.currentTarget as HTMLFormElement;
+    const formData = new FormData(e.target as HTMLFormElement);
 
-    const email = form.email.value;
-    const password = form.password.value;
+    const email = formData.get("email") as string;
+    const password = formData.get("password") as string;
 
     const data = {
       email,
@@ -63,13 +64,11 @@ const Login = () => {
           user: signUpData.newUser,
         })
       );
-      if(signUpData.newUser.role === 'admin'){
+      if (signUpData.newUser.role === "admin") {
         return redirect("/admin/profile");
+      } else {
+        return redirect("/user/profile");
       }
-      else{
-        return redirect('/user/profile')
-      }
-
     }
   }
   // google
@@ -91,8 +90,9 @@ const Login = () => {
         <div data-aos="fade-right" className="flex justify-center items-center">
           <Image
             src={LoginImg}
-            height={"auto"}
-            width={"100%"}
+            height={200}
+            width={100}
+            className="w-1/2 h-96"
             alt="signup Image"
           />
         </div>
@@ -136,7 +136,6 @@ const Login = () => {
               type="submit"
             >
               <CustomButton
-                type="submit"
                 btnText="LogIn"
                 customCss="text-blue-700 font-bold"
               />

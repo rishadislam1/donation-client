@@ -111,11 +111,7 @@ const items: MenuItem[] = [
 const items2: MenuItem[] = [
   {
     label: (
-      <Link
-        href="/"
-        rel="noopener noreferrer"
-        className="cursor-pointer"
-      >
+      <Link href="/" rel="noopener noreferrer" className="cursor-pointer">
         Home
       </Link>
     ),
@@ -155,24 +151,36 @@ const AdminLayout = ({ children }: { children: React.ReactNode }) => {
 
   useEffect(() => {
     // Access localStorage directly
-    const allData = JSON.parse(localStorage?.getItem("auth"));
+    const storedData = localStorage?.getItem("auth");
 
-    if (allData?.user.role !== "admin") {
+    if (storedData) {
+      const allData = JSON.parse(storedData);
+      if (allData?.user.role !== "admin") {
+        Swal.fire({
+          title: "Fail",
+          text: "Unauthorized User",
+          icon: "error",
+          confirmButtonText: "LogIn",
+        });
+        return redirect("/login");
+      }
+      // Dispatch userLoggedIn action with data from localStorage
+      dispatch(
+        userLoggedIn({
+          accessToken: allData?.accessToken,
+          user: allData?.user,
+        })
+      );
+    }
+    else {
       Swal.fire({
         title: "Fail",
-        text: "Unauthorized User",
+        text: "You are not logedin",
         icon: "error",
         confirmButtonText: "LogIn",
       });
       return redirect("/login");
     }
-    // Dispatch userLoggedIn action with data from localStorage
-    dispatch(
-      userLoggedIn({
-        accessToken: allData?.accessToken,
-        user: allData?.user,
-      })
-    );
   }, [dispatch]);
 
   const { user } = useAppSelector((state) => state.auth);

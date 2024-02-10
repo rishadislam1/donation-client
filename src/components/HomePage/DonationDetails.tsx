@@ -11,12 +11,36 @@ import CustomButton from "../CustomButton/CustomButton";
 
 const { Meta } = Card;
 
-const DonationDetails = ({ id }) => {
-  const { data: categoryData } = useGetCategoryQuery();
-  const { data: categoryDetailsData } = useGetCategoryDetailsQuery();
+const DonationDetails = ({ id }: { id: string }) => {
+  // interface
+
+  interface ICategory {
+    _id?: string;
+    name: string;
+    title: string;
+    image: string;
+  }
+
+  interface ICategoryDetails {
+    _id?: string;
+    name: string;
+    categoryName: string;
+    description: string;
+    image: string;
+  }
+
+  const { data: categoryData } = useGetCategoryQuery(undefined);
+  const { data: categoryDetailsData } = useGetCategoryDetailsQuery(undefined);
 
   const [loadMore, setLoadMore] = useState(false);
-  const categoryNames = ["all", "education", "clothing", "food", "medical", "health"];
+  const categoryNames = [
+    "all",
+    "education",
+    "clothing",
+    "food",
+    "medical",
+    "health",
+  ];
   const initialIndex = categoryNames.indexOf(id);
 
   const [tabIndex, setTabIndex] = useState(initialIndex);
@@ -32,7 +56,7 @@ const DonationDetails = ({ id }) => {
       >
         <TabList>
           <Tab>All</Tab>
-          {categoryData?.result?.map((category) => (
+          {categoryData?.result?.map((category: ICategory) => (
             <Tab key={category._id}>{category.name}</Tab>
           ))}
         </TabList>
@@ -45,27 +69,33 @@ const DonationDetails = ({ id }) => {
                 : "grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 justify-center items-center gap-10 mt-10"
             }`}
           >
-            {categoryDetailsData?.result?.slice(0, 6).map((category) => (
-              <Link key={category._id} href="/" className="no-underline">
-                <Card
-                  hoverable
-                  style={{ width: 240 }}
-                  cover={
-                    <Image
-                      src={category.image}
-                      height={100}
-                      width={100}
-                      alt={category.title}
-                    />
-                  }
+            {categoryDetailsData?.result
+              ?.slice(0, 6)
+              .map((category: ICategoryDetails) => (
+                <Link
+                  key={category._id}
+                  href={`/donationDetails/${category._id}`}
+                  className="no-underline"
                 >
-                  <Meta
-                    title={category.name}
-                    description={category.categoryName}
-                  />
-                </Card>
-              </Link>
-            ))}
+                  <Card
+                    hoverable
+                    style={{ width: 240 }}
+                    cover={
+                      <Image
+                        src={category.image}
+                        height={100}
+                        width={100}
+                        alt={category.name}
+                      />
+                    }
+                  >
+                    <Meta
+                      title={category.name}
+                      description={category.categoryName}
+                    />
+                  </Card>
+                </Link>
+              ))}
             <button
               className={`border-none bg-transparent`}
               onClick={() => {
@@ -87,8 +117,12 @@ const DonationDetails = ({ id }) => {
                 : "hidden"
             } `}
           >
-            {categoryDetailsData?.result?.map((category) => (
-              <Link key={category._id} href="/" className="no-underline">
+            {categoryDetailsData?.result?.map((category: ICategoryDetails) => (
+              <Link
+                key={category._id}
+                href={`/donationDetails/${category._id}`}
+                className="no-underline"
+              >
                 <Card
                   hoverable
                   style={{ width: 240 }}
@@ -110,7 +144,7 @@ const DonationDetails = ({ id }) => {
             ))}
           </div>
         </TabPanel>
-        {categoryData?.result?.map((category1) => (
+        {categoryData?.result?.map((category1: ICategory) => (
           <TabPanel key={category1._id}>
             {
               <div
@@ -118,9 +152,16 @@ const DonationDetails = ({ id }) => {
             } `}
               >
                 {categoryDetailsData?.result
-                  ?.filter((cat) => cat.categoryName === category1.name)
-                  .map((category) => (
-                    <Link key={category._id} href="/" className="no-underline">
+                  ?.filter(
+                    (cat: ICategoryDetails) =>
+                      cat.categoryName === category1.name
+                  )
+                  .map((category: ICategoryDetails) => (
+                    <Link
+                      key={category._id}
+                      href={`/donationDetails/${category._id}`}
+                      className="no-underline"
+                    >
                       <Card
                         hoverable
                         style={{ width: 240 }}
@@ -129,7 +170,7 @@ const DonationDetails = ({ id }) => {
                             src={category.image}
                             height={100}
                             width={100}
-                            alt={category.title}
+                            alt={category.categoryName}
                           />
                         }
                       >

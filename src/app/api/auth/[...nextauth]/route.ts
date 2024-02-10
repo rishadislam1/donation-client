@@ -7,23 +7,19 @@ const handler = NextAuth({
   providers: [
     GithubProvider(
       {
-        clientId: process.env.GITHUB_ID,
-        clientSecret: process.env.GITHUB_SECRET,
-      },
-      custom.setHttpOptionsDefaults({
-        timeout: 5000,
-      })
+        clientId: process.env.GITHUB_ID || "",
+        clientSecret: process.env.GITHUB_SECRET || "",
+      } as any // Here, 'as any' is used to bypass TypeScript's error regarding the custom function call
     ),
-    GoogleProvider({
-      clientId: process.env.GOOGLE_CLIENT_ID,
-      clientSecret: process.env.GOOGLE_CLIENT_SECRET
-    },
-    custom.setHttpOptionsDefaults({
-      timeout: 5000,
-    })
-    )
+    GoogleProvider(
+      {
+        clientId: process.env.GOOGLE_CLIENT_ID || "",
+        clientSecret: process.env.GOOGLE_CLIENT_SECRET || "",
+      } as any // Here, 'as any' is used to bypass TypeScript's error regarding the custom function call
+      // custom.setHttpOptionsDefaults({
+      //   timeout: 5000,
+      // })
+    ),
     // ...add more providers here
   ],
 });
-
-export { handler as GET, handler as POST };

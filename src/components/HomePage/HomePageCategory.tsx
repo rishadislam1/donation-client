@@ -9,7 +9,26 @@ import Link from "next/link";
 const { Meta } = Card;
 
 const HomePageCategory = () => {
-  const { data: categoryData, isLoading } = useGetCategoryQuery();
+
+   // interface
+
+   interface ICategory {
+    _id?: string;
+    name: string;
+    title: string;
+    image: string;
+  }
+
+  interface ICategoryDetails {
+    _id?: string;
+    name: string;
+    categoryName: string;
+    description: string;
+    image: string;
+  }
+
+
+  const { data: categoryData, isLoading } = useGetCategoryQuery(undefined);
   if (isLoading) {
     return (
       <BallTriangle
@@ -31,7 +50,7 @@ const HomePageCategory = () => {
       >
         <h1 className="text-center mt-20 mb-10">OUR ALL CATEGORY FOR DONETS</h1>
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 justify-center items-center gap-10">
-          {categoryData?.result?.map((category) => (
+          {categoryData?.result?.map((category:ICategoryDetails) => (
             <Link
               key={category._id}
               href={`/donation/${category.name}`}
@@ -45,7 +64,7 @@ const HomePageCategory = () => {
                     src={category.image}
                     height={100}
                     width={100}
-                    alt={category.title}
+                    alt={category.categoryName}
                   />
                 }
               >

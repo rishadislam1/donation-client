@@ -2,6 +2,10 @@ import AnimCursor from "@/components/AnimCursor";
 import HomeBanner from "@/components/HomePage/HomeBanner";
 import HomePageCategory from "@/components/HomePage/HomePageCategory";
 import HomePageSearch from "@/components/HomePage/HomePageSearch";
+interface Metadata {
+  title: string;
+  description: string;
+}
 
 export const metadata: Metadata = {
   title: "Donation Website | Home",

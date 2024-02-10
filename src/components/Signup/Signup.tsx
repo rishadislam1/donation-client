@@ -24,13 +24,14 @@ const Signup = () => {
 
   const [register, { data: signUpData, isLoading }] = useRegisterMutation();
 
-  const handleSignup = (e: React.FormEvent<HTMLInputElement>): void => {
+  const handleSignup = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    const form = e.currentTarget;
-    const name = form.name.value;
-    const email = form.email.value;
-    const password = form.password.value;
-    const confirmPassword = form.confirmPassword.value;
+    const form = e.currentTarget as HTMLFormElement;
+    const formData = new FormData(e.target as HTMLFormElement);
+    const name = formData.get("name") as string;
+    const email = formData.get("email") as string;
+    const password = formData.get("password") as string;
+    const confirmPassword = formData.get("confirmPassword") as string;
 
     if (password !== confirmPassword) {
       Swal.fire({
@@ -50,7 +51,7 @@ const Signup = () => {
   };
 
   // check
-  if(!isLoading && signUpData){
+  if (!isLoading && signUpData) {
     Swal.fire({
       title: "Success",
       text: "Registration Successful. Now go to login and login with your credential",
@@ -139,7 +140,6 @@ const Signup = () => {
               type="submit"
             >
               <CustomButton
-                type="submit"
                 btnText="SignUp"
                 customCss="text-blue-700 font-bold"
               />
@@ -182,8 +182,9 @@ const Signup = () => {
         <div data-aos="fade-left">
           <Image
             src={signupImg}
-            height={"auto"}
-            width={"100%"}
+            height={100}
+            width={100}
+            className="w-1/2 h-96"
             alt="signup Image"
           />
         </div>

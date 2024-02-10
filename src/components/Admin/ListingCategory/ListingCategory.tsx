@@ -25,11 +25,12 @@ import {
 } from "@/redux/features/Admin/categoryDetails/categoryDetailsApi";
 
 const ListingCategory = () => {
-  const [categorySelect, setCategorySelect] = useState("");
+  const [categorySelect, setCategorySelect] = useState("education");
 
   const { user } = useAppSelector((state) => state.auth);
   const email = user?.email;
-  const { data: category, isLoading: categoryLoading } = useGetCategoryQuery();
+  const { data: category, isLoading: categoryLoading } =
+    useGetCategoryQuery(undefined);
   const [deleteCategory, { isLoading: deleteLoading, data: deleteData }] =
     useDeleteCategoryDetailsMutation();
 
@@ -37,26 +38,34 @@ const ListingCategory = () => {
     useAddCategoryDetailsMutation();
 
   const { data: categoryDetailsData, isLoading: categoryDetailsLoading } =
-    useGetCategoryDetailsQuery();
+    useGetCategoryDetailsQuery(undefined);
 
   // interface
 
   interface ICategory {
+    _id?: string;
     name: string;
     title: string;
     image: string;
   }
 
+  interface ICategoryDetails {
+    _id?: string;
+    name: string;
+    categoryName: string;
+    description: string;
+    image: string;
+  }
+
   //   handle category
 
-  const handleAddCategory = async (
-    e: React.FormEvent<HTMLInputElement>
-  ): void => {
+  const handleAddCategory = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    const form = e.currentTarget;
-    const name = form.name.value.toLowerCase();
-    const categoryName = form.categoryName.value;
-    const description = form.description.value;
+    const form = e.currentTarget as HTMLFormElement;
+    const formData = new FormData(e.target as HTMLFormElement);
+    const name = formData.get("name") as string;
+    const categoryName = formData.get("categoryName") as string;
+    const description = formData.get("description") as string;
     const categoryImage = form.image.files[0];
     const image_hosting =
       "https://api.imgbb.com/1/upload?expiration=600&key=496cd83f6d0a12aa50bec50d47669908";
@@ -119,7 +128,7 @@ const ListingCategory = () => {
 
   //   handle delete
 
-  const handleDelete = (items: ICategory) => {
+  const handleDelete = (items: ICategoryDetails) => {
     Swal.fire({
       title: "Are you sure?",
       text: "You won't be able to revert this!",
@@ -144,8 +153,8 @@ const ListingCategory = () => {
 
   //   hanlde seelct
 
-  const handleSelect = (e: React.FormEvent<HTMLInputElement>) => {
-    setCategorySelect(e.currentTarget.value);
+  const handleSelect = (e: React.ChangeEvent<HTMLSelectElement>) => {
+    setCategorySelect(e.target.value);
   };
 
   return (
@@ -181,7 +190,7 @@ const ListingCategory = () => {
             name="categoryName"
             className="border-none bg-gray-300  px-5 py-2 rounded-xl"
           >
-            {category?.result?.map((categoryList) => (
+            {category?.result?.map((categoryList: ICategory) => (
               <option value={categoryList.name} key={categoryList._id}>
                 {categoryList.name}
               </option>
@@ -205,7 +214,6 @@ const ListingCategory = () => {
           type="submit"
         >
           <CustomButton
-            type="submit"
             btnText="Add Details"
             customCss="text-blue-700 font-bold"
           />
@@ -221,7 +229,7 @@ const ListingCategory = () => {
           className="border-none bg-gray-300  px-5 py-2 rounded-xl mb-20"
           onChange={handleSelect}
         >
-          {category?.result?.map((categoryList) => (
+          {category?.result?.map((categoryList: ICategory) => (
             <option value={categoryList.name} key={categoryList._id}>
               {categoryList.name}
             </option>
@@ -242,8 +250,10 @@ const ListingCategory = () => {
           </thead>
           <tbody>
             {categoryDetailsData?.result
-              ?.filter((cat) => cat.categoryName === categorySelect)
-              .map((item, index) => (
+              ?.filter(
+                (cat: ICategoryDetails) => cat.categoryName === categorySelect
+              )
+              .map((item: ICategoryDetails, index: number) => (
                 <tr key={item._id}>
                   <th>{index + 1}</th>
                   <th>
@@ -260,7 +270,7 @@ const ListingCategory = () => {
                       src={item.image}
                       height={100}
                       width={100}
-                      alt={item.title}
+                      alt={item.name}
                     />
                   </th>
 

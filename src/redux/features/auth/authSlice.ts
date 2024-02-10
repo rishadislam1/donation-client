@@ -5,7 +5,8 @@ interface IUser{
     accessToken: string | undefined,
     user:{
         name: string,
-        email: string
+        email: string,
+        role?:string
     } | undefined
 }
 

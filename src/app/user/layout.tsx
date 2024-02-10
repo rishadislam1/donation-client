@@ -10,24 +10,36 @@ const UserLayout = () => {
   const dispatch = useAppDispatch();
   useEffect(() => {
     // Access localStorage directly
-    const allData = JSON.parse(localStorage?.getItem("auth"));
+    const storedData = localStorage?.getItem("auth");
 
-    if (allData?.user.role !== "user") {
+    if (storedData) {
+      const allData = JSON.parse(storedData);
+
+      if (allData?.user.role !== "user") {
+        Swal.fire({
+          title: "Fail",
+          text: "Unauthorized User",
+          icon: "error",
+          confirmButtonText: "LogIn",
+        });
+        return redirect("/login");
+      }
+      // Dispatch userLoggedIn action with data from localStorage
+      dispatch(
+        userLoggedIn({
+          accessToken: allData?.user.accessToken,
+          user: allData?.user.newUser,
+        })
+      );
+    } else {
       Swal.fire({
         title: "Fail",
-        text: "Unauthorized User",
+        text: "You are not logedin",
         icon: "error",
         confirmButtonText: "LogIn",
       });
       return redirect("/login");
     }
-    // Dispatch userLoggedIn action with data from localStorage
-    dispatch(
-      userLoggedIn({
-        accessToken: allData?.user.accessToken,
-        user: allData?.user.newUser,
-      })
-    );
   }, [dispatch]);
 
   return <div></div>;
