@@ -15,13 +15,15 @@ import { useEffect } from "react";
 import { signIn } from "next-auth/react";
 import { useLoginMutation } from "@/redux/features/auth/authApi";
 import { redirect } from "next/navigation";
-import { useAppDispatch } from "@/redux/hooks";
+import { useAppDispatch, useAppSelector } from "@/redux/hooks";
 import { userLoggedIn } from "@/redux/features/auth/authSlice";
 
 const Login = () => {
   useEffect(() => {
     AOS.init({ duration: 1000 });
   }, []);
+
+  const { user } = useAppSelector((state) => state.auth);
 
   // signup apis
   const dispatch = useAppDispatch();
@@ -83,6 +85,13 @@ const Login = () => {
       callbackUrl: `${"http://localhost:3000/loginHandle"}`,
     });
   };
+
+  if (user?.role === "admin") {
+    return redirect("/admin/profile");
+  }
+  if (user?.role === "user") {
+    return redirect("/user/profile");
+  }
 
   return (
     <div>

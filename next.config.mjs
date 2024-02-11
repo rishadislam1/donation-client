@@ -4,6 +4,7 @@ const nextConfig = {
       domains: ['i.ibb.co','ibb.co'],
     },
     env: {
+        NEXTAUTH_SECRET: 'mQ46qpFwfE1BHuqMC+qlm19qBAD9fVPgh28werwe3ASFlAfnKjM=',
         GITHUB_ID: "Iv1.2c682cdbd1b9403c",
         GITHUB_SECRET: "e69224fd543ba3d5d7ea2b6e3a13a92695f378e5",
         GOOGLE_CLIENT_ID: '256994439223-bqjcnipnpdicnv4upcq0saml8o9a8ngf.apps.googleusercontent.com',

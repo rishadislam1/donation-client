@@ -14,11 +14,15 @@ import "aos/dist/aos.css";
 import { useEffect } from "react";
 import { signIn } from "next-auth/react";
 import { useRegisterMutation } from "@/redux/features/auth/authApi";
+import { useAppSelector } from "@/redux/hooks";
+import { redirect } from "next/navigation";
 
 const Signup = () => {
   useEffect(() => {
     AOS.init({ duration: 1000 });
   }, []);
+
+  const { user } = useAppSelector((state) => state.auth);
 
   // signup apis
 
@@ -71,6 +75,13 @@ const Signup = () => {
       callbackUrl: `${"http://localhost:3000/loginHandle"}`,
     });
   };
+
+  if (user?.role === "admin") {
+    return redirect("/admin/profile");
+  }
+  if (user?.role === "user") {
+    return redirect("/user/profile");
+  }
 
   return (
     <div>
