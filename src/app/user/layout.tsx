@@ -67,7 +67,7 @@ const items: MenuItem[] = [
         Donation History
       </Link>
     ),
-    key: "addcategory",
+    key: "donateHistory",
     icon: <FaHistory />
     ,
   },
@@ -81,7 +81,7 @@ const items: MenuItem[] = [
         Statistics
       </Link>
     ),
-    key: "addcategory",
+    key: "statistics",
     icon: <FcStatistics />,
   },
   {
