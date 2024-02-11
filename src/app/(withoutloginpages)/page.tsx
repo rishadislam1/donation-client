@@ -2,6 +2,7 @@ import AnimCursor from "@/components/AnimCursor";
 import HomeBanner from "@/components/HomePage/HomeBanner";
 import HomePageCategory from "@/components/HomePage/HomePageCategory";
 import HomePageSearch from "@/components/HomePage/HomePageSearch";
+import VolunteerHome from "@/components/HomePage/VolunteerHome";
 interface Metadata {
   title: string;
   description: string;
@@ -19,6 +20,7 @@ const HomePage = () => {
       <HomePageSearch />
       <HomeBanner />
       <HomePageCategory/>
+      <VolunteerHome/>
     </div>
   );
 };

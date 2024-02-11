@@ -49,7 +49,7 @@ const HomePageCategory = () => {
         className="flex flex-col justify-center items-center text-center"
       >
         <h1 className="text-center mt-20 mb-10">OUR ALL CATEGORY FOR DONETS</h1>
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 justify-center items-center gap-10">
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 justify-center items-center gap-20">
           {categoryData?.result?.map((category:ICategoryDetails) => (
             <Link
               key={category._id}

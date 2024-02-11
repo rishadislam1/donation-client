@@ -9,7 +9,6 @@ import {
   PlusOutlined,
 } from "@ant-design/icons";
 import CustomButton from "@/components/CustomButton/CustomButton";
-import { useDeleteCategoryMutation } from "@/redux/features/Admin/category/categoryApi";
 import { useAppSelector } from "@/redux/hooks";
 import Swal from "sweetalert2";
 import type { GetProp, UploadProps } from "antd";
@@ -19,6 +18,7 @@ import { MdDeleteForever } from "react-icons/md";
 import Image from "next/image";
 import {
   useAddVolunteerMutation,
+  useDeleteVolunteerMutation,
   useGetVolunteerQuery,
 } from "@/redux/features/Volunteer/volunteerApi";
 import { TiWorld } from "react-icons/ti";
@@ -34,8 +34,10 @@ const Volunteer = () => {
   const { data: volunteerData, isLoading: volunteerLoading } =
     useGetVolunteerQuery(undefined);
 
-  const [deleteCategory, { isLoading: deleteLoading, data: deleteData }] =
-    useDeleteCategoryMutation();
+  const [
+    deleteVolunteer,
+    { data: deleteVolunteerData, isLoading: deleteVolunteerIsLoading },
+  ] = useDeleteVolunteerMutation();
 
   // interface
 
@@ -119,7 +121,7 @@ const Volunteer = () => {
 
   //   handle delete
 
-  const handleDelete = (items: ICategory) => {
+  const handleDelete = (items: IVolunteer) => {
     Swal.fire({
       title: "Are you sure?",
       text: "You won't be able to revert this!",
@@ -131,15 +133,15 @@ const Volunteer = () => {
     }).then((result) => {
       if (result.isConfirmed) {
         const id = items._id;
-        deleteCategory({ email, id });
+        deleteVolunteer({ email, id });
       }
     });
   };
 
-  if (!deleteLoading && deleteData) {
+  if (!deleteVolunteerIsLoading && deleteVolunteerData?.status === true) {
     Swal.fire({
       title: "Deleted!",
-      text: "Your file has been deleted.",
+      text: "Your volunteer has been deleted.",
       icon: "success",
     });
   }

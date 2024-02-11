@@ -3,7 +3,7 @@ import React from 'react';
 
 const ListingCategoryPage = () => {
     return (
-        <div>
+        <div className='cursor-auto'>
             <ListingCategory/>
         </div>
     );
