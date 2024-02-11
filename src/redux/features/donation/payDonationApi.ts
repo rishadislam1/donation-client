@@ -19,12 +19,26 @@ export const payDonationApi = apiSlice.injectEndpoints({
       providesTags: ["donation"],
     }),
     acceptDonation: builder.mutation({
-      query: ({userEmail,clientEmail}) => ({
-        url: `acceptstatus/${userEmail}/${clientEmail}`,
+      query: ({userEmail,id}) => ({
+        url: `acceptstatus/${userEmail}/${id}`,
         method: "PATCH",
       }),
       invalidatesTags: ['donation']
     }),
+    rejectDonation: builder.mutation({
+        query: ({userEmail,id}) => ({
+          url: `rejectstatus/${userEmail}/${id}`,
+          method: "PATCH",
+        }),
+        invalidatesTags: ['donation']
+      }),
+      deleteDonation: builder.mutation({
+        query: ({userEmail,id}) => ({
+          url: `deletedonation/${userEmail}/${id}`,
+          method: "DELETE",
+        }),
+        invalidatesTags: ['donation']
+      }),
   }),
 });
 
@@ -32,5 +46,7 @@ export const {
   useDonationPayMutation,
   useGetDonationQuery,
   useGetAllDonationQuery,
-  useAcceptDonationMutation
+  useAcceptDonationMutation,
+  useRejectDonationMutation,
+  useDeleteDonationMutation
 } = payDonationApi;

@@ -2,7 +2,9 @@
 
 import {
   useAcceptDonationMutation,
+  useDeleteDonationMutation,
   useGetAllDonationQuery,
+  useRejectDonationMutation,
 } from "@/redux/features/donation/payDonationApi";
 import { useAppSelector } from "@/redux/hooks";
 import { useEffect, useState } from "react";
@@ -32,6 +34,16 @@ const DonationRequest = () => {
     { data: acceptDonationData, isLoading: acceptLoading },
   ] = useAcceptDonationMutation();
 
+  //   reject donation
+  const [
+    rejectDonation,
+    { data: rejectDonationData, isLoading: rejectLoading },
+  ] = useRejectDonationMutation();
+
+//   delete donation
+
+const [deleteDonation, {data:deleteData, isLoading: deleteLoading}] = useDeleteDonationMutation();
+
   useEffect(() => {
     if (donationData) {
       const total = donationData.reduce(
@@ -55,8 +67,8 @@ const DonationRequest = () => {
 
   //   handle accept
 
-  const handleAccept = (clientEmail) => {
-    acceptDonation({userEmail,clientEmail});
+  const handleAccept = (id) => {
+    acceptDonation({ userEmail, id });
   };
   if (acceptLoading) {
     Swal.fire({
@@ -77,7 +89,49 @@ const DonationRequest = () => {
 
   // handle Reject
 
-  const handleReject = () => {};
+  const handleReject = (id) => {
+    rejectDonation({ userEmail, id });
+  };
+  if (rejectLoading) {
+    Swal.fire({
+      title: "Rejecting...",
+      text: "Please Wait",
+      didOpen: () => {
+        Swal.showLoading();
+      },
+    });
+  }
+  if (!rejectLoading && rejectDonationData) {
+    Swal.fire({
+      title: "Rejected",
+      icon: "success",
+      confirmButtonText: "OK",
+    });
+  }
+
+  //   handle handleDelete
+
+  const handleDelete = (id) => {
+    deleteDonation({userEmail,id});
+  };
+
+  if (deleteLoading) {
+    Swal.fire({
+      title: "Deleting...",
+      text: "Please Wait",
+      didOpen: () => {
+        Swal.showLoading();
+      },
+    });
+  }
+  if (!deleteLoading && deleteData) {
+    Swal.fire({
+      title: "Deleted",
+      icon: "success",
+      confirmButtonText: "OK",
+    });
+  }
+
 
   //   main
   return (
@@ -138,19 +192,30 @@ const DonationRequest = () => {
                       <div className="flex gap-5 items-center justify-center">
                         <button
                           className="p-2 bg-green-400  font-bold border-none rounded cursor-pointer"
-                          onClick={()=>handleAccept(item.userEmail)}
+                          onClick={() => handleAccept(item._id)}
                         >
                           Accept
                         </button>
                         <button
                           className="p-2 bg-red-700 text-white font-bold border-none rounded cursor-pointer"
-                          onClick={handleReject}
+                          onClick={() => handleReject(item._id)}
                         >
                           Reject
                         </button>
                       </div>
                     ) : (
-                      item.status
+                      <>
+                        {" "}
+                        <b> {item.status}</b>{" "}
+                        {item.status === "rejected" && (
+                          <button
+                            className="p-2 bg-red-700 text-white font-bold border-none rounded cursor-pointer"
+                            onClick={() => handleDelete(item._id)}
+                          >
+                            Delete
+                          </button>
+                        )}
+                      </>
                     )}
                   </th>
                 </tr>
