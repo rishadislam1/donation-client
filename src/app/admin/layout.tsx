@@ -17,6 +17,7 @@ import Link from "next/link";
 import AnimCursor from "@/components/AnimCursor";
 import AOS from "aos";
 import "aos/dist/aos.css";
+import { LiaDonateSolid } from "react-icons/lia";
 
 const { Header, Content, Footer, Sider } = Layout;
 
@@ -77,6 +78,19 @@ const items: MenuItem[] = [
         icon: <UsergroupAddOutlined />,
       },
     ],
+  },
+  {
+    label: (
+      <Link
+        href="/admin/donationrequest"
+        rel="noopener noreferrer"
+        className="cursor-pointer"
+      >
+        Donation Request
+      </Link>
+    ),
+    key: "donationrequest",
+    icon: <LiaDonateSolid />,
   },
   {
     label: (

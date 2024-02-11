@@ -3,9 +3,13 @@
 @tailwind utilities;
 
 html {
-  --cursor-color: #EB9309
+  --cursor-color: #eb9309;
 }
 
 html.dark-mode {
   --cursor-color: #fff;
+}
+
+button {
+  cursor: pointer;
 }

@@ -14,28 +14,30 @@ interface IDonation {
 }
 
 const DonationHistory = () => {
-    const [totalDonation, setTotalDonation] = useState<number>(0);
+  const [totalDonation, setTotalDonation] = useState<number>(0);
   const { user } = useAppSelector((state) => state.auth);
-  const userEmail = user?.email;
 
-  const { data: donationData, isLoading } = useGetDonationQuery({ userEmail });
+  const userEmail = user?.email;
+  const { data: donationData, isLoading } = useGetDonationQuery(userEmail);
 
   useEffect(() => {
-
     if (donationData) {
-      const total = donationData.reduce((accumulator: number, item: IDonation) => {
-        
-        return accumulator + parseFloat(item.mainAmount);
-      }, 0);
+      const total = donationData.reduce(
+        (accumulator: number, item: IDonation) => {
+          return accumulator + parseFloat(item.mainAmount);
+        },
+        0
+      );
 
       setTotalDonation(total);
     }
   }, [donationData]);
 
-
   return (
     <div>
-      <h3 className="text-green-700 text-xl">Total Donation: {totalDonation} </h3>
+      <h3 className="text-green-700 text-xl">
+        Total Donation: {totalDonation}{" "}
+      </h3>
       <div className="overflow-auto mt-10">
         <table className="table w-full ">
           {/* head */}
