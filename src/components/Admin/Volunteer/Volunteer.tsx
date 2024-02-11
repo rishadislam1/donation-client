@@ -22,6 +22,7 @@ import {
   useGetVolunteerQuery,
 } from "@/redux/features/Volunteer/volunteerApi";
 import { TiWorld } from "react-icons/ti";
+import { FaMailBulk } from "react-icons/fa";
 
 const Volunteer = () => {
   const { user } = useAppSelector((state) => state.auth);
@@ -46,6 +47,7 @@ const Volunteer = () => {
     name: string;
     profession: string;
     country: string;
+    email: string;
     image: string;
   }
 
@@ -59,6 +61,7 @@ const Volunteer = () => {
     const name = formData.get("name") as string;
     const profession = formData.get("title") as string;
     const country = formData.get("country") as string;
+    const email = formData.get("email") as string;
     const categoryImage = form.image.files[0];
     const image_hosting =
       "https://api.imgbb.com/1/upload?expiration=600&key=496cd83f6d0a12aa50bec50d47669908";
@@ -84,6 +87,7 @@ const Volunteer = () => {
           name,
           profession,
           country,
+          email,
           image: imageData?.data?.url,
         };
         addVolunteer({ data, email });
@@ -134,17 +138,15 @@ const Volunteer = () => {
       if (result.isConfirmed) {
         const id = items._id;
         deleteVolunteer({ email, id });
+        Swal.fire({
+          title: "Deleted!",
+          text: "Your volunteer has been deleted.",
+          icon: "success",
+        });
       }
     });
   };
 
-  if (!deleteVolunteerIsLoading && deleteVolunteerData?.status === true) {
-    Swal.fire({
-      title: "Deleted!",
-      text: "Your volunteer has been deleted.",
-      icon: "success",
-    });
-  }
   return (
     <div data-aos="fade-right">
       <h1>Add A New Volunteer</h1>
@@ -182,6 +184,17 @@ const Volunteer = () => {
         </div>
 
         <div className="mt-5">
+          <label>Volunteer Email*</label>
+          <Input
+            placeholder="Volunteer Email"
+            name="email"
+            required
+            prefix={<FaMailBulk />}
+            className="mt-2"
+          />
+        </div>
+
+        <div className="mt-5">
           <label>Volunteer Image*</label> <br />
           <br />
           <input
@@ -212,6 +225,7 @@ const Volunteer = () => {
               <th>Volunteer Name</th>
               <th>Volunteer Profession</th>
               <th>Volunteer Country</th>
+              <th>Volunteer Email</th>
               <th>Image</th>
               <th>ACTION</th>
             </tr>
@@ -225,6 +239,7 @@ const Volunteer = () => {
                 </th>
                 <th>{item.profession}</th>
                 <th>{item.country}</th>
+                <th>{item.email}</th>
                 <th>
                   <Image
                     src={item.image}

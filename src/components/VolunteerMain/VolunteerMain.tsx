@@ -5,29 +5,101 @@ import Image from "next/image";
 import Link from "next/link";
 import CustomButton from "../CustomButton/CustomButton";
 import "./volunteerMain.css";
+import { useAddVolunteerRequestMutation } from "@/redux/features/volunteerRequest/volunteerRequestApi";
+import Swal from "sweetalert2";
 
 const { Meta } = Card;
 
 const VolunteerMain = () => {
   const { data: volunteerData } = useGetVolunteerQuery(undefined);
 
+  const [
+    addVolunteerRequest,
+    { data: addVolunteerRequestData, isLoading: addVolunteerRequestIsLoading },
+  ] = useAddVolunteerRequestMutation();
+
   //   handleFormRequest
-  const handleFormRequest = (e: React.FormEvent<HTMLFormElement>) => {
+
+  const handleFormRequest = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
+
     const form = e.currentTarget as HTMLFormElement;
     const formData = new FormData(e.target as HTMLFormElement);
     const name = formData.get("name") as string;
     const email = formData.get("email") as string;
     const profession = formData.get("profession") as string;
     const country = formData.get("country") as string;
+    const categoryImage = form.image.files[0];
+    const image_hosting =
+      "https://api.imgbb.com/1/upload?expiration=600&key=496cd83f6d0a12aa50bec50d47669908";
 
-    const data = {
-        name,
-        email,
-        profession,
-        country
+    if (categoryImage) {
+      // Upload the image to imgbb
+      const formData = new FormData();
+      formData.append("image", categoryImage);
+
+      try {
+        const response = await fetch(
+          "https://api.imgbb.com/1/upload?expiration=600&key=496cd83f6d0a12aa50bec50d47669908",
+          {
+            method: "POST",
+            body: formData,
+          }
+        );
+
+        const imageData = await response.json();
+
+        // Use imageData.url in your data object
+        const data = {
+          name,
+          profession,
+          country,
+          email,
+          image: imageData?.data?.url,
+        };
+        addVolunteerRequest(data);
+        form.reset();
+      } catch (error) {
+        Swal.fire({
+          title: "Fail!",
+          text: "Error uploading image",
+          icon: "error",
+          confirmButtonText: "Ok",
+        });
+      }
     }
   };
+
+  if (addVolunteerRequestIsLoading) {
+    Swal.fire({
+      title: "Requesting...",
+      text: "Please Wait",
+      didOpen: () => {
+        Swal.showLoading();
+      },
+    });
+  }
+
+  if (
+    !addVolunteerRequestIsLoading &&
+    addVolunteerRequestData?.status === false
+  ) {
+    Swal.fire({
+      title: "The Email Address Already Exist",
+      text: "YOU ARE ALREADY A MEMBER",
+      icon: "success",
+    });
+  }
+
+  if (
+    !addVolunteerRequestIsLoading &&
+    addVolunteerRequestData?.status === true
+  ) {
+    Swal.fire({
+      title: "Requested SuccessFully",
+      icon: "success",
+    });
+  }
 
   return (
     <div className="mt-52" data-aos="fade-right">
@@ -57,7 +129,7 @@ const VolunteerMain = () => {
           </div>
         </div>
 
-        <div>
+        <div data-aos="fade-left">
           <div className="volunteerRequest p-10 rounded-xl text-white">
             <form onSubmit={handleFormRequest}>
               <div className="flex flex-col gap-3">
@@ -106,6 +178,18 @@ const VolunteerMain = () => {
                   required
                 />
               </div>
+
+              <div className="mt-5">
+                <label>Volunteer Image*</label> <br />
+                <br />
+                <input
+                  type="file"
+                  name="image"
+                  id="image"
+                  accept=".jpg, .jpeg, .png"
+                />
+              </div>
+
               <button
                 type="submit"
                 className="mt-5 px-5 py-2 rounded-xl bg-yellow-600 text-white border-none cursor-pointer text-xl"
