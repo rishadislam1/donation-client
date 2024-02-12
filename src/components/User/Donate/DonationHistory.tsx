@@ -5,6 +5,7 @@ import { useAppSelector } from "@/redux/hooks";
 import { useEffect, useState } from "react";
 
 interface IDonation {
+  _id:string;
   mainAmount: string;
   transactionID: string;
   phoneNumber: string;
@@ -60,7 +61,7 @@ const DonationHistory = () => {
                 </th>
                 <th>{item.phoneNumber}</th>
                 <th>{item.mainAmount}</th>
-                <th>{item.payDate}</th>
+                <th>{item.payDate && new Date(item.payDate).toLocaleDateString()}</th>
                 <th>{item.status}</th>
               </tr>
             ))}

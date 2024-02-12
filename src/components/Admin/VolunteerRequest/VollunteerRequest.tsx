@@ -81,7 +81,7 @@ const VollunteerRequest = () => {
 
   // handle Reject
 
-  const handleReject = (id: string) => {
+  const handleReject = (id: string | undefined) => {
     rejectVolunteerRequest({ userEmail, id });
   };
   if (rejectLoading) {

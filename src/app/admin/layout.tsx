@@ -18,6 +18,7 @@ import AnimCursor from "@/components/AnimCursor";
 import AOS from "aos";
 import "aos/dist/aos.css";
 import { LiaDonateSolid } from "react-icons/lia";
+import { MdContactMail } from "react-icons/md";
 
 const { Header, Content, Footer, Sider } = Layout;
 
@@ -134,29 +135,31 @@ const items2: MenuItem[] = [
   },
   {
     label: (
-      <Link href="/about" rel="noopener noreferrer" className="cursor-pointer">
-        About
+      <Link
+        href="/donation"
+        rel="noopener noreferrer"
+        className="cursor-pointer"
+      >
+        Donation
       </Link>
     ),
-    key: "about",
-    icon: <UsergroupAddOutlined />,
+    key: "contact",
+    icon: <MdContactMail />,
   },
   {
     label: (
       <Link
-        href="/contact"
+        href="/volunteer"
         rel="noopener noreferrer"
         className="cursor-pointer"
       >
-        Contact Us
+        Volunteer
       </Link>
     ),
-    key: "contact",
-    icon: <NotificationOutlined />,
+    key: "volunteer",
+    icon: <MdContactMail />,
   },
 ];
-
-
 
 const AdminLayout = ({ children }: { children: React.ReactNode }) => {
   useEffect(() => {
@@ -187,8 +190,7 @@ const AdminLayout = ({ children }: { children: React.ReactNode }) => {
           user: allData?.user,
         })
       );
-    }
-    else {
+    } else {
       Swal.fire({
         title: "Fail",
         text: "You are not logedin",

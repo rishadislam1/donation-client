@@ -11,6 +11,7 @@ import { useEffect, useState } from "react";
 import Swal from "sweetalert2";
 
 interface IDonation {
+  _id?: string;
   mainAmount: string;
   transactionID: string;
   phoneNumber: string;
@@ -25,7 +26,7 @@ const DonationRequest = () => {
 
   const userEmail = user?.email;
 
-  const { data: donationData, isLoading } = useGetAllDonationQuery(userEmail);
+  const { data: donationData, isLoading } = useGetAllDonationQuery(undefined);
 
   //   accept donation
 
@@ -40,9 +41,10 @@ const DonationRequest = () => {
     { data: rejectDonationData, isLoading: rejectLoading },
   ] = useRejectDonationMutation();
 
-//   delete donation
+  //   delete donation
 
-const [deleteDonation, {data:deleteData, isLoading: deleteLoading}] = useDeleteDonationMutation();
+  const [deleteDonation, { data: deleteData, isLoading: deleteLoading }] =
+    useDeleteDonationMutation();
 
   useEffect(() => {
     if (donationData) {
@@ -67,7 +69,7 @@ const [deleteDonation, {data:deleteData, isLoading: deleteLoading}] = useDeleteD
 
   //   handle accept
 
-  const handleAccept = (id) => {
+  const handleAccept = (id: string | undefined) => {
     acceptDonation({ userEmail, id });
   };
   if (acceptLoading) {
@@ -89,7 +91,7 @@ const [deleteDonation, {data:deleteData, isLoading: deleteLoading}] = useDeleteD
 
   // handle Reject
 
-  const handleReject = (id) => {
+  const handleReject = (id: string | undefined) => {
     rejectDonation({ userEmail, id });
   };
   if (rejectLoading) {
@@ -111,8 +113,8 @@ const [deleteDonation, {data:deleteData, isLoading: deleteLoading}] = useDeleteD
 
   //   handle handleDelete
 
-  const handleDelete = (id) => {
-    deleteDonation({userEmail,id});
+  const handleDelete = (id: string | undefined) => {
+    deleteDonation({ userEmail, id });
   };
 
   if (deleteLoading) {
@@ -131,7 +133,6 @@ const [deleteDonation, {data:deleteData, isLoading: deleteLoading}] = useDeleteD
       confirmButtonText: "OK",
     });
   }
-
 
   //   main
   return (
@@ -170,7 +171,7 @@ const [deleteDonation, {data:deleteData, isLoading: deleteLoading}] = useDeleteD
               ?.filter((cat: IDonation) => {
                 return (
                   cat.mainAmount == searchKey ||
-                  cat.payDate === searchKey ||
+                  cat.payDate === new Date(searchKey) ||
                   cat.phoneNumber.includes(searchKey) ||
                   cat.status.includes(searchKey) ||
                   cat.transactionID.includes(searchKey) ||
@@ -185,20 +186,20 @@ const [deleteDonation, {data:deleteData, isLoading: deleteLoading}] = useDeleteD
                   </th>
                   <th>{item.phoneNumber}</th>
                   <th>{item.mainAmount}</th>
-                  <th>{item.payDate}</th>
+                  <th>{item.payDate && new Date(item.payDate).toLocaleDateString()}</th>
                   <th>{item.userEmail}</th>
                   <th>
                     {item.status === "pending" ? (
                       <div className="flex gap-5 items-center justify-center">
                         <button
                           className="p-2 bg-green-400  font-bold border-none rounded cursor-pointer"
-                          onClick={() => handleAccept(item._id)}
+                          onClick={() => handleAccept(item?._id)}
                         >
                           Accept
                         </button>
                         <button
                           className="p-2 bg-red-700 text-white font-bold border-none rounded cursor-pointer"
-                          onClick={() => handleReject(item._id)}
+                          onClick={() => handleReject(item?._id)}
                         >
                           Reject
                         </button>
@@ -210,7 +211,7 @@ const [deleteDonation, {data:deleteData, isLoading: deleteLoading}] = useDeleteD
                         {item.status === "rejected" && (
                           <button
                             className="p-2 bg-red-700 text-white font-bold border-none rounded cursor-pointer"
-                            onClick={() => handleDelete(item._id)}
+                            onClick={() => handleDelete(item?._id)}
                           >
                             Delete
                           </button>

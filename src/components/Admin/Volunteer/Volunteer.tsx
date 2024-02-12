@@ -245,7 +245,7 @@ const Volunteer = () => {
                     src={item.image}
                     height={100}
                     width={100}
-                    alt={item.title}
+                    alt={item.name}
                   />
                 </th>
 

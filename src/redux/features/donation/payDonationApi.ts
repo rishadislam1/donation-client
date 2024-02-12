@@ -15,7 +15,7 @@ export const payDonationApi = apiSlice.injectEndpoints({
       providesTags: ["donation"],
     }),
     getAllDonation: builder.query({
-      query: (userEmail) => `getalldonation/${userEmail}`,
+      query: () => `getalldonation`,
       providesTags: ["donation"],
     }),
     acceptDonation: builder.mutation({

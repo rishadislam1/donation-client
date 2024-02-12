@@ -8,6 +8,17 @@ import "./volunteerMain.css";
 import { useAddVolunteerRequestMutation } from "@/redux/features/volunteerRequest/volunteerRequestApi";
 import Swal from "sweetalert2";
 
+
+interface IVolunteer {
+  _id?: string;
+  name: string;
+  profession: string;
+  country: string;
+  email: string;
+  image: string;
+}
+
+
 const { Meta } = Card;
 
 const VolunteerMain = () => {
@@ -108,7 +119,7 @@ const VolunteerMain = () => {
       <div className="grid grid-cols-1 md:grid-cols-3 lg:grid-cols-4 lg:px-20 gap-10">
         <div className="flex justify-center items-center md:col-span-2 lg:col-span-3">
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 items-center justify-center gap-20 mt-14">
-            {volunteerData?.map((vol) => (
+            {volunteerData?.map((vol:IVolunteer) => (
               <div key={vol._id}>
                 <Card
                   hoverable

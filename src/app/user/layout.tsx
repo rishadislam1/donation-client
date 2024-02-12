@@ -19,7 +19,7 @@ import AOS from "aos";
 import "aos/dist/aos.css";
 import { FaDonate, FaHistory } from "react-icons/fa";
 import { FcStatistics } from "react-icons/fc";
-import { MdVolunteerActivism } from "react-icons/md";
+import { MdContactMail, MdVolunteerActivism } from "react-icons/md";
 
 const { Header, Content, Footer, Sider } = Layout;
 
@@ -113,25 +113,29 @@ const items2: MenuItem[] = [
   },
   {
     label: (
-      <Link href="/about" rel="noopener noreferrer" className="cursor-pointer">
-        About
+      <Link
+        href="/donation"
+        rel="noopener noreferrer"
+        className="cursor-pointer"
+      >
+        Donation
       </Link>
     ),
-    key: "about",
-    icon: <UsergroupAddOutlined />,
+    key: "contact",
+    icon: <MdContactMail />,
   },
   {
     label: (
       <Link
-        href="/contact"
+        href="/volunteer"
         rel="noopener noreferrer"
         className="cursor-pointer"
       >
-        Contact Us
+        Volunteer
       </Link>
     ),
-    key: "contact",
-    icon: <NotificationOutlined />,
+    key: "volunteer",
+    icon: <MdContactMail />,
   },
 ];
 

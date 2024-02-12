@@ -1,14 +1,27 @@
 "use client";
+import { useGetCategoryQuery } from "@/redux/features/Admin/category/categoryApi";
 import { useDonationPayMutation } from "@/redux/features/donation/payDonationApi";
 import { useAppSelector } from "@/redux/hooks";
 import React from "react";
 import Swal from "sweetalert2";
+
+
+
+interface ICategory {
+  _id?: string;
+  name: string;
+  title: string;
+  image: string;
+}
+
 
 const Donate = () => {
   const { user } = useAppSelector((state) => state.auth);
   const userEmail = user?.email;
   const [donationPay, { data: donationData, isLoading }] =
     useDonationPayMutation();
+
+  const { data: categoryData } = useGetCategoryQuery(undefined);
 
   // handle payment
   const handlePayment = (e: React.FormEvent<HTMLFormElement>) => {
@@ -17,18 +30,20 @@ const Donate = () => {
     const formData = new FormData(e.target as HTMLFormElement);
     const amount = formData.get("amount") as string;
     const customPay = formData.get("customPay") as string;
-    const mainAmount = amount | customPay;
+    const mainAmount = Number(amount) | Number(customPay);
     const transactionID = formData.get("transactionID") as string;
     const phoneNumber = formData.get("phoneNumber") as string;
-    const  today= new Date();
-    const payDate = today.toLocaleDateString('en-GB');
+    const today = new Date();
+    const payDate = today.toLocaleDateString("en-GB");
+    const category = formData.get('category') as string;
 
     const data = {
       mainAmount,
       transactionID,
       phoneNumber,
       userEmail,
-      payDate
+      payDate,
+      category
     };
 
     donationPay(data);
@@ -57,7 +72,6 @@ const Donate = () => {
       className="mt-10 p-8 rounded-xl bg-gray-100 shadow-xl"
       data-aos="fade-down"
     >
-   
       <h1>OUR TRANSACTION NUMBERS:</h1>
       <p className="text-blue-800 text-xl text-center">
         <b>Bkash Number: </b>+8801705978622 <br />
@@ -157,6 +171,21 @@ const Donate = () => {
               placeholder="Your Payment Phone Number"
             />
           </div>
+        </div>
+
+        <div className="mt-5">
+          <p className="font-bold">Select Category*:</p>
+
+          <select
+            required
+            name="category"
+            id=""
+            className="text-xl rounded-xl p-3"
+          >
+            {categoryData?.result?.map((dt:ICategory) => (
+              <option key={dt._id}>{dt.name}</option>
+            ))}
+          </select>
         </div>
         <p className="mt-5 text-red-700 font-bold text-xl">
           ***Please Pay with Bkash OR Nagad***

@@ -7,6 +7,15 @@ import CustomButton from "../CustomButton/CustomButton";
 
 const { Meta } = Card;
 
+interface IVolunteer {
+  _id?: string;
+  name: string;
+  profession: string;
+  country: string;
+  email: string;
+  image: string;
+}
+
 const VolunteerHome = () => {
   const { data: volunteerData } = useGetVolunteerQuery(undefined);
   return (
@@ -18,7 +27,7 @@ const VolunteerHome = () => {
         OUR BELOVED PEOPLES ARE WORKING ALL OVER THE WORLD.
       </h1>
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 items-center justify-center gap-20 mt-14">
-        {volunteerData?.slice(0, 6).map((vol) => (
+        {volunteerData?.slice(0, 6).map((vol: IVolunteer) => (
           <div key={vol._id}>
             <Card
               hoverable

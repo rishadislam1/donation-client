@@ -1,7 +1,13 @@
 /** @type {import('next').NextConfig} */
 const nextConfig = {
     images: {
-      domains: ['i.ibb.co','ibb.co'],
+      remotePatterns: [
+        {
+          protocol: 'https',
+          hostname: '*',
+          pathname: '**',
+        },
+      ],
     },
     env: {
         NEXTAUTH_SECRET: 'mQ46qpFwfE1BHuqMC+qlm19qBAD9fVPgh28werwe3ASFlAfnKjM=',

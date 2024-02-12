@@ -72,8 +72,8 @@ const DonateQuestion = () => {
             <textarea
               name="help"
               id="help"
-              cols="30"
-              rows="10"
+              cols={30}
+              rows={10}
               className="rounded-xl border-none py-3 px-3 bg-gray-300 cursor-auto"
               required
             ></textarea>
