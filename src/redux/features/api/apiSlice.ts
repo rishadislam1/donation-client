@@ -7,7 +7,7 @@ interface AuthState {
 export const apiSlice = createApi({
   reducerPath: "api",
   baseQuery: fetchBaseQuery({
-    baseUrl: "http://localhost:5000",
+    baseUrl: "https://donation-server-1fyj.vercel.app",
     prepareHeaders: async (headers, {getState})=>{
         const token = (getState() as {auth: AuthState})?.auth?.accessToken;
         if(token){
